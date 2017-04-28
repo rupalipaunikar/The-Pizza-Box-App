@@ -7,9 +7,7 @@
     <artifactId>thepizzabox</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.pizzabox</groupId>
   <artifactId>payment</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>payment Maven Webapp</name>
   <url>http://maven.apache.org</url>

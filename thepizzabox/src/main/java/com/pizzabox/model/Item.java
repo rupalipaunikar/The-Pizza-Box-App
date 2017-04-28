@@ -1,18 +1,39 @@
 package com.pizzabox.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * Represents items such as pizza, side dishes and beverages
+ * 
+ * @author rupalip
+ *
+ */
+@Entity
+@Table(name = "item")
 public class Item {
 
-	private Integer id;
+	@Id
+	@Column(name = "item_id")
+	private Integer itemId;
+
+	@Column(name = "name")
 	private String name;
+
+	@Column(name = "type")
 	private String type;
+
+	@Column(name = "price")
 	private Double price;
 
 	public Integer getId() {
-		return id;
+		return itemId;
 	}
 
 	public void setId(Integer id) {
-		this.id = id;
+		this.itemId = id;
 	}
 
 	public String getName() {
@@ -39,4 +60,8 @@ public class Item {
 		this.price = price;
 	}
 
+	@Override
+	public String toString() {
+		return "Item [itemId=" + itemId + ", name=" + name + ", type=" + type + ", price=" + price + "]";
+	}
 }

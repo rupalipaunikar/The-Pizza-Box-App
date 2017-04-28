@@ -1,13 +1,34 @@
 package com.pizzabox.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * This class represnts the user details
+ * @author rupalip
+ *
+ */
+@Entity
+@Table(name="user")
 public class User {
 
+	@Id
+	@Column(name="user_id")
 	private Integer userId;
+	
+	@Column(name="first_name")
 	private String firstName;
+	
+	@Column(name="last_name")
 	private String LastName;
+	
+	@Column(name="address")
 	private String address;
-	private String phoneNo;
-	private LoginDetails loginDetails;
+	
+	@Column(name="contact_no")
+	private String contactNo;
 
 	public Integer getUserId() {
 		return userId;
@@ -42,19 +63,16 @@ public class User {
 	}
 
 	public String getPhoneNo() {
-		return phoneNo;
+		return contactNo;
 	}
 
 	public void setPhoneNo(String phoneNo) {
-		this.phoneNo = phoneNo;
+		this.contactNo = phoneNo;
 	}
 
-	public LoginDetails getLoginDetails() {
-		return loginDetails;
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + LastName + ", address=" + address
+				+ ", contactNo=" + contactNo + "]";
 	}
-
-	public void setLoginDetails(LoginDetails loginDetails) {
-		this.loginDetails = loginDetails;
-	}
-
 }

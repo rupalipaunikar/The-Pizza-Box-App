@@ -1,22 +1,54 @@
 package com.pizzabox.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.pizzabox.constants.PaymentType;
 import com.pizzabox.constants.Status;
 
+/**
+ * Represents an order which can have multiple suborders
+ * 
+ * @author rupalip
+ *
+ */
+@Entity
+@Table(name="order_details")
 public class Order {
 
+	@Id
+	@Column(name="order_id")
 	private Integer id;
+	
+	@Column(name="payment_type")
 	private PaymentType paymentType;
+	
+	@Column(name="status")
 	private Status status;
-	// mapping
-	private List<SubOrder> subOrders;
+
+	@OneToMany(mappedBy = "order")
+	private List<SubOrder> subOrders = new ArrayList<SubOrder>(0);
+	
+	@Column(name="total_amount")
 	private Double totalAmount;
-	//mapping
+	
+	@OneToOne
+	@JoinColumn(name="user_id")
 	private User user;
+	
+	@Column(name="created_timestamp")
 	private Timestamp createdTimestamp;
+	
+	@Column(name="updated_timestamp")
 	private Timestamp updatedTimestamp;
 
 	public Integer getId() {
@@ -83,4 +115,10 @@ public class Order {
 		this.updatedTimestamp = updatedTimestamp;
 	}
 
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", paymentType=" + paymentType + ", status=" + status + ", subOrders=" + subOrders
+				+ ", totalAmount=" + totalAmount + ", user=" + user + ", createdTimestamp=" + createdTimestamp
+				+ ", updatedTimestamp=" + updatedTimestamp + "]";
+	}
 }
