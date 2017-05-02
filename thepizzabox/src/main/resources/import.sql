@@ -12,3 +12,6 @@ INSERT INTO pizzabox.item (name, price, type) VALUES ('Pepsi', 99, '2');
 
 INSERT INTO pizzabox.user (first_name, last_name, address, contact_no) VALUES ('Roshni', 'Swadia', 'Pune', '9876546756');
 INSERT INTO pizzabox.user (first_name, last_name, address, contact_no) VALUES ('Rupali', 'Paunikar', 'Pune', '9087678980');
+
+INSERT INTO pizzabox.login_details VALUES ('roshni', 'guest', 'roshni', 1);
+INSERT INTO pizzabox.login_details VALUES ('rupali', 'guest', 'rupali', 2);
