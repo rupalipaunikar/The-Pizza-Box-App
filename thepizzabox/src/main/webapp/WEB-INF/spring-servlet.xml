@@ -21,7 +21,4 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
-	<bean id="homeController" class="com.pizzabox.controller.HomeController"/>
-
-	
 </beans>

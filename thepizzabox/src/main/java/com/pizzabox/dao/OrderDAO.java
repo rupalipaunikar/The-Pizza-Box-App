@@ -1,5 +1,5 @@
 package com.pizzabox.dao;
 
-public interface OrderDao {
+public interface OrderDAO {
 
 }
