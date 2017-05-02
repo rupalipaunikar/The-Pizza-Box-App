@@ -32,6 +32,39 @@
 <!-- Favicon -->
 <link rel="shortcut icon" href="favicon.ico" />
 <title>Home Page</title>
+<script>
+/* function myFunction() {
+	 alert("Hello! I am an alert box!");
+        /* var items = [];
+        $('input:checked').each(function () {
+ 
+            items.push($(this).attr("value"));
+        });
+        $.ajax({
+            url: "makeOrder",
+            type: "POST",
+            data: {itemsList:items},
+            dataType: "json",
+            traditional:true,
+            success: function () {
+                alert("ajax request to server succeed");
+            }
+        }); 
+    }); */
+    
+    function validateform(){  
+    	 var items = [];
+         $('input:checked').each(function () {
+  
+             items.push($(this).attr("value"));
+         });
+         $.ajax({
+             url: "makeOrder",
+             type: "POST",
+             data: {itemsList:items},
+         }); 
+    	}  
+</script>
 </head>
 <body>
 	<!--========== HEADER ==========-->
@@ -100,39 +133,26 @@
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
 						<form name='loginForm' action="${loginUrl}" method='POST'>
-							<table>
-								<tr>
-									<td>
-										<h3>Enter Credentials</h3>
-									</td>
-								</tr>
-								<c:if test="${not empty error}">
-									<div class="error">${error}</div>
-								</c:if>
-								<c:if test="${not empty msg}">
-									<div class="msg">${msg}</div>
-								</c:if>
-								<tr>
-									<td>Username</td>
-									<td><input type="text" name="username"></td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-								</tr>
-								<tr>
-									<td>Password</td>
-									<td><input type="password" name="password"></td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td>&nbsp;</td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td><input type="submit" value="Submit"></td>
-								</tr>
-							</table>
+							<c:forEach var="itemTypeMap" items="${ItemTypeMap}">
+								<fieldset style="border-width: 6px">
+									<legend>
+										<c:out value="${itemTypeMap.key}" />
+									</legend>
+									<c:forEach var="itemList" items="${itemTypeMap.value}">
+										<label
+											style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;"><input
+											type="checkbox" name="itemChechBox"
+											value='<c:out value="${itemList.itemId}"/>'
+											id='<c:out value="${itemList.itemId}"/>' />&nbsp;<c:out
+												value="${itemList.name}" /></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									</c:forEach>
+								</fieldset>
+								<br>
+							</c:forEach>
+							<input type="button" id="makeOrder" name="Proceed for Payment" onclick="validateform()"
+								value="Proceed for Payment"
+								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; 
+								cursor: pointer;" />
 						</form>
 					</div>
 				</div>
