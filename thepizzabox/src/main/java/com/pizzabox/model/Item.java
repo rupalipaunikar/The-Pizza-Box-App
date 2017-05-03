@@ -35,6 +35,9 @@ public class Item {
 
 	@Column(name = "price")
 	private Double price;
+	
+	@Column(name = "quantity")
+	private Integer quantity;
 
 	public Item() {
 	}
@@ -77,6 +80,15 @@ public class Item {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+	
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override

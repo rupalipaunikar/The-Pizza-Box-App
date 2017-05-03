@@ -2,6 +2,9 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en" class="no-js">
 <head>
@@ -32,39 +35,7 @@
 <!-- Favicon -->
 <link rel="shortcut icon" href="favicon.ico" />
 <title>Home Page</title>
-<script>
-/* function myFunction() {
-	 alert("Hello! I am an alert box!");
-        /* var items = [];
-        $('input:checked').each(function () {
- 
-            items.push($(this).attr("value"));
-        });
-        $.ajax({
-            url: "makeOrder",
-            type: "POST",
-            data: {itemsList:items},
-            dataType: "json",
-            traditional:true,
-            success: function () {
-                alert("ajax request to server succeed");
-            }
-        }); 
-    }); */
-    
-    function validateform(){  
-    	 var items = [];
-         $('input:checked').each(function () {
-  
-             items.push($(this).attr("value"));
-         });
-         $.ajax({
-             url: "makeOrder",
-             type: "POST",
-             data: {itemsList:items},
-         }); 
-    	}  
-</script>
+
 </head>
 <body>
 	<!--========== HEADER ==========-->
@@ -132,27 +103,70 @@
 			<div class="content-md container">
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
-						<form name='loginForm' action="${loginUrl}" method='POST'>
-							<c:forEach var="itemTypeMap" items="${ItemTypeMap}">
+						<form name='loginForm' action="makeOrder" method="post">
+						
+						<%-- <c:forEach var="item" items="${ItemList}">
+						<c:out value="${item.type}"/>
+							<c:if test="${item.type=='PIZZA'}">
+							
+													<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
+													<input type="checkbox" name="itemChechBox" value='<c:out value="${item.itemId}"/>' />
+													<c:out value="${item.name}" /></label>
+													<input type="text" name="quantity" value='<c:out value="${item.quantity}"/>' />
+											<input type="text" name="name" value='<c:out value="${item.name}"/>'/>
+											<input type="text" name="price" value='<c:out value="${item.price}"/>' />
+											<input type="text" name="type" value='<c:out value="${item.type}"/>'/>
+											</c:if>
+						</c:forEach> --%>
+						
+						 <c:forEach var="item" items="${ItemList}" varStatus="status">
+						 	<c:if test="${item.type=='PIZZA'}">
+        <form:input path="item[${status.index}].name" name="name" value="${item.name}" />
+        <form:input path="item[${status.index}].quantity" name="quantity" value="${item.quantity}" />
+        </c:if>
+        </c:forEach>
+						
+							<%-- <c:forEach var="itemTypeMap" items="${ItemTypeMap}">
 								<fieldset style="border-width: 6px">
 									<legend>
 										<c:out value="${itemTypeMap.key}" />
 									</legend>
-									<c:forEach var="itemList" items="${itemTypeMap.value}">
-										<label
-											style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;"><input
-											type="checkbox" name="itemChechBox"
-											value='<c:out value="${itemList.itemId}"/>'
-											id='<c:out value="${itemList.itemId}"/>' />&nbsp;<c:out
-												value="${itemList.name}" /></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									</c:forEach>
+									<table>
+										<c:forEach var="item" items="${itemTypeMap.value}">
+										
+											<tr>
+												<td >
+													<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
+													<input type="checkbox" name="itemChechBox" value='<c:out value="${item.itemId}"/>' />
+													<c:out value="${item.name}" /></label>
+												</td>
+												<td>
+												&nbsp;
+												</td>
+												<td>
+												&nbsp;
+												</td>
+												
+												<td>	
+													<input type="text" name="quantity" value='<c:out value="${item.quantity}"/>' />
+												</td>
+											</tr>	
+											<input type="hidden" name="name" value='<c:out value="${item.name}"/>'/>
+											<input type="hidden" name="price" value='<c:out value="${item.price}"/>' />
+											<input type="hidden" name="type" value='<c:out value="${item.type}"/>'/>
+											
+											
+											
+										</c:forEach>
+									</table>
 								</fieldset>
 								<br>
-							</c:forEach>
-							<input type="button" id="makeOrder" name="Proceed for Payment" onclick="validateform()"
-								value="Proceed for Payment"
-								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; 
-								cursor: pointer;" />
+							</c:forEach> --%>
+							
+						
+							<input type="submit" id="makeOrder" name="Proceed for Payment"
+								onclick="validateform()" value="Proceed for Payment"
+								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
 						</form>
 					</div>
 				</div>
