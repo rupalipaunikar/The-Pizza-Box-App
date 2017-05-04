@@ -11,13 +11,9 @@
 	</parent>
 	
 	<artifactId>core</artifactId>
-	<packaging>war</packaging>
+	<packaging>war</packaging> 
 	<name>core Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	
-	<dependencies>
-		
-	</dependencies>
 	
 	<build>
 		<finalName>core</finalName>
