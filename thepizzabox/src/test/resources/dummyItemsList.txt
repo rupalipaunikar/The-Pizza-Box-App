@@ -1,9 +1,0 @@
-1, Deluxe Veggie, 500, pizza
-2, 5 pepper, 450, pizza
-3, Exotica, 525, pizza
-4, Garlic Breadsticks, 200, sides
-5, Cheesy Dip, 20, sides
-6, White Pasta, 250, sides
-7, Virgin Mojito, 100, beverage
-8, Lemonade, 125, beverage
-9, Pepsi, 99, beverage
