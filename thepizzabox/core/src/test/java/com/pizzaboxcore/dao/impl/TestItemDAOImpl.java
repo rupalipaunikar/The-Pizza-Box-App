@@ -25,7 +25,7 @@ import com.pizzaboxcore.model.Item;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)  
-@ContextConfiguration(locations={JUnitConstants.LOCATION_APP_CONTEXT, JUnitConstants.LOCATION_PAYMENT_INT_CONTEXT})  
+@ContextConfiguration(locations=JUnitConstants.LOCATION_APP_CONTEXT)  
 public class TestItemDAOImpl {
 
 	@Autowired
