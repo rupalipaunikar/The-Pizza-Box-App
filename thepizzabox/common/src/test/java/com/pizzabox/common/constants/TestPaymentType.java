@@ -1,9 +1,9 @@
-package com.pizzaboxcore.constants;
+package com.pizzabox.common.constants;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.pizzaboxcore.constants.PaymentType;
+import com.pizzabox.common.constants.PaymentType;
 
 
 /**

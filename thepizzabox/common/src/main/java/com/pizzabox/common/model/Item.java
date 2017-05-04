@@ -1,4 +1,4 @@
-package com.pizzaboxcore.model;
+package com.pizzabox.common.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.pizzaboxcore.constants.ItemType;
+import com.pizzabox.common.constants.ItemType;
 
 /**
  * Represents items such as pizza, side dishes and beverages

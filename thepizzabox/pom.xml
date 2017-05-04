@@ -185,6 +185,7 @@
 	<modules>
 		<module>core</module>
 		<module>payment</module>
+		<module>common</module>
 	</modules>
 
 </project>

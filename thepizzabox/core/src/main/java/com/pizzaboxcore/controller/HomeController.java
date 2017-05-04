@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pizzaboxcore.constants.ItemType;
-import com.pizzaboxcore.model.Item;
+import com.pizzabox.common.constants.ItemType;
+import com.pizzabox.common.constants.Status;
+import com.pizzabox.common.model.Item;
+import com.pizzabox.common.model.Order;
+import com.pizzabox.common.model.User;
 import com.pizzaboxcore.service.ItemService;
 
 @Controller
@@ -55,15 +58,25 @@ public class HomeController {
 	
 	
 	
-	@RequestMapping(value = "/payment", method = RequestMethod.POST)
+	@RequestMapping(value = "/makeorder", method = RequestMethod.POST)
 	public ModelAndView makeOrder(@ModelAttribute("item") ArrayList<Item> item,HttpServletRequest req) {
-		
-		String item1 = (String) req.getParameter("item");
-		
 		System.out.println("In home controller....");
 		
+		Order order = new Order();
+		order.setId(1);
+		order.setStatus(Status.SUBMITTED);
 		
+		User user = new User();
+		user.setFirstName("Rupali");
+		user.setLastName("Paunikar");
+		user.setContactNo("98989");
+		user.setAddress("Pune");
 		
-		return new ModelAndView("paymentgateway");
+		order.setUser(user);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("order",order);
+		mv.setViewName("paymentgateway");
+		return mv;
 	}
 }

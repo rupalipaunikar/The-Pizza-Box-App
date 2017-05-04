@@ -15,6 +15,24 @@
 	<name>payment Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
+	<dependencies>
+		<dependency>
+			<groupId>com.pizzabox</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.pizzabox</groupId>
+			<artifactId>common</artifactId>
+			<type>test-jar</type>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+
 	<build>
 		<finalName>payment</finalName>
 	</build>

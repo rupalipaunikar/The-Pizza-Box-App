@@ -3,7 +3,7 @@ package com.pizzaboxcore.service;
 import java.util.List;
 import java.util.Map;
 
-import com.pizzaboxcore.model.Item;
+import com.pizzabox.common.model.Item;
 
 /**
  * ItemService contains the APIs to interact with Item related services

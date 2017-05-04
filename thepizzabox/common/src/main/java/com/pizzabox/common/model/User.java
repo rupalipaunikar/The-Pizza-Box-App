@@ -1,4 +1,4 @@
-package com.pizzaboxcore.model;
+package com.pizzabox.common.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,29 +8,30 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * This class represnts the user details
+ * This class represents the user details
+ * 
  * @author rupalip
  *
  */
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="user_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "user_id")
 	private Integer userId;
-	
-	@Column(name="first_name")
+
+	@Column(name = "first_name")
 	private String firstName;
-	
-	@Column(name="last_name")
-	private String LastName;
-	
-	@Column(name="address")
+
+	@Column(name = "last_name")
+	private String lastName;
+
+	@Column(name = "address")
 	private String address;
-	
-	@Column(name="contact_no")
+
+	@Column(name = "contact_no")
 	private String contactNo;
 
 	public Integer getUserId() {
@@ -50,11 +51,11 @@ public class User {
 	}
 
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String getAddress() {
@@ -65,17 +66,17 @@ public class User {
 		this.address = address;
 	}
 
-	public String getPhoneNo() {
+	public String getContactNo() {
 		return contactNo;
 	}
 
-	public void setPhoneNo(String phoneNo) {
-		this.contactNo = phoneNo;
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
 	}
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + LastName + ", address=" + address
+		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + lastName + ", address=" + address
 				+ ", contactNo=" + contactNo + "]";
 	}
 }

@@ -1,4 +1,4 @@
-package com.pizzaboxcore.config;
+package com.pizzabox.common.config;
 
 import java.io.File;
 
@@ -8,7 +8,7 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.PropertyConfigurator;
 
-import com.pizzaboxcore.constants.Constants;
+import com.pizzabox.common.constants.Constants;
 
 /**
  * Listener class for log4j initialization

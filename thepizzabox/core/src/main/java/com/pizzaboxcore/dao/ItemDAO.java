@@ -2,7 +2,7 @@ package com.pizzaboxcore.dao;
 
 import java.util.List;
 
-import com.pizzaboxcore.model.Item;
+import com.pizzabox.common.model.Item;
 
 /**
  * ItemDAO contains the APIs to interact with Item table

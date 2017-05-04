@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
+<%@ page isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,6 +12,37 @@
 <title>Insert title here</title>
 </head>
 <body>
-In Payment gateway
+	<form:form name='payment' action="http://localhost:8080/payment/makepayment" method="post" modelAttribute="order">
+	
+		<table>
+                <tr>
+                    <td><form:label path="id">Id</form:label></td>
+                    <td><form:input path="id"/></td>
+                </tr>
+                <tr>
+                    <td><form:label path="status">Status</form:label></td>
+                    <td><form:input path="status"/></td>
+                </tr>
+                <tr>
+                    <td><form:label path="paymentType">Payment Type</form:label></td>
+                    <td><form:input path="paymentType"/></td>
+                </tr>
+                
+                
+            </table>
+            
+<%-- 		<form:input type="text" name="orderid" value="${order.id }"/>  --%>
+<%-- 		<form:input type="text" name="orderpaymentType" value="${order.paymentType}"/> --%>
+<%-- 		<form:input type="text" name="orderstatus" value="${order.status }"/> --%>
+<%-- 		<form:input type="text" name="subOrders" value="${order.subOrders }"/> --%>
+<%-- 		<form:input type="text" name="totalAmount" value="${order.totalAmount }"/> --%>
+<%-- 		<form:input type="text" name="user" value="${order.user }"/> --%>
+<%-- 		<form:input type="text" name="createdTimestamp" value="${order.createdTimestamp }"/> --%>
+<%-- 		<form:input type="text" name="updatedTimestamp" value="${order.updatedTimestamp }"/> --%>
+		
+		<input type="submit" id="payment" name="Make Payment"
+			onclick="validateform()" value="Make Payment"
+			style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
+	</form:form>
 </body>
 </html>

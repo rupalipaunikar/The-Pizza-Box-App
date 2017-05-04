@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.pizzaboxcore.constants.JUnitConstants;
-import com.pizzaboxcore.model.Item;
+import com.pizzabox.common.constants.JUnitConstants;
+import com.pizzabox.common.model.Item;
 import com.pizzaboxcore.service.ItemService;
 
 

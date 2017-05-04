@@ -3,20 +3,36 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>com.pizzabox</groupId>
 		<artifactId>thepizzabox</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>core</artifactId>
 	<packaging>war</packaging>
 	<name>core Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	
+
+	<dependencies>
+		<dependency>
+			<groupId>com.pizzabox</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.pizzabox</groupId>
+			<artifactId>common</artifactId>
+			<type>test-jar</type>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<finalName>core</finalName>
 	</build>
-	
+
 </project>

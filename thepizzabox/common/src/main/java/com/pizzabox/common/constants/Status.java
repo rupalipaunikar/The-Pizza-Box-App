@@ -1,6 +1,7 @@
-package com.pizzaboxcore.constants;
+package com.pizzabox.common.constants;
 
 import org.apache.log4j.Logger;
+
 
 /**
  * This enum holds values for the status which an order can have throughout its processing

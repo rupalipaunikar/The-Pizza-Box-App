@@ -1,4 +1,4 @@
-package com.pizzaboxcore.model;
+package com.pizzabox.common.model;
 
 import java.io.Serializable;
 
@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 /**
  * Holds login details of a user

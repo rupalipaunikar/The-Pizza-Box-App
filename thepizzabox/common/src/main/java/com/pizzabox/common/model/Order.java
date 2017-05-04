@@ -1,4 +1,4 @@
-package com.pizzaboxcore.model;
+package com.pizzabox.common.model;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.pizzaboxcore.constants.PaymentType;
-import com.pizzaboxcore.constants.Status;
+import com.pizzabox.common.constants.PaymentType;
+import com.pizzabox.common.constants.Status;
 
 /**
  * Represents an order which can have multiple suborders

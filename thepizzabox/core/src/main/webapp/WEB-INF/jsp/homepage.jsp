@@ -103,7 +103,7 @@
 			<div class="content-md container">
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
-						<form name='loginForm' action="http://localhost:8080/payment/makepayment" method="get">
+						<form name='loginForm' action="makeorder" method="post">
 						
 						<%-- <c:forEach var="item" items="${ItemList}">
 						<c:out value="${item.type}"/>
@@ -168,6 +168,8 @@
 								onclick="validateform()" value="Proceed for Payment"
 								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
 						</form>
+						
+						
 					</div>
 				</div>
 			</div>

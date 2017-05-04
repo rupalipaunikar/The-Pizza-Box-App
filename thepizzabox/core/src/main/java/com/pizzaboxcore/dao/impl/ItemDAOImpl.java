@@ -8,8 +8,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.pizzabox.common.model.Item;
 import com.pizzaboxcore.dao.ItemDAO;
-import com.pizzaboxcore.model.Item;
 
 /**
  * ItemDAOImpl contains the implementation of ItemDAO APIs 

@@ -1,4 +1,4 @@
-package com.pizzaboxcore.constants;
+package com.pizzabox.common.constants;
 
 /**
  * This class holds system wide usable constants

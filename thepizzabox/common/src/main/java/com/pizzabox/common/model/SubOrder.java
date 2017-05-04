@@ -1,4 +1,4 @@
-package com.pizzaboxcore.model;
+package com.pizzabox.common.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 /**
  * Represents details of a suborder specific to the item being processed.
