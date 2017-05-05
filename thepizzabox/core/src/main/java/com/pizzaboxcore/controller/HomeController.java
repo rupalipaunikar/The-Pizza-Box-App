@@ -141,8 +141,6 @@ public class HomeController {
 
 		final User user = orderService.getUserDetails(principalUserObject);
 		Order order = orderService.generateOrder(finalOrderList, totalPrice, user);
-		ModelAndView model2 = new ModelAndView();
-		model2.addObject("OrderList",finalOrderList);
 		return new ModelAndView("paymentgateway", "order", order);
 
 
