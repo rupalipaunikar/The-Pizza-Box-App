@@ -29,7 +29,7 @@ public class TestItemServiceImpl {
 	
 	@Test
 	public void testCreateInitialItemDataMap(){
-		Map<String, List<Item>> map = itemService.createInitialItemDataMap();
+		List<Item> map = itemService.createInitialList();
 		Assert.assertNotNull(map);
 		Assert.assertEquals(3, map.size());
 	}

@@ -8,31 +8,39 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * This class represents the user details
- * 
+ * This class represnts the user details
  * @author rupalip
  *
  */
 @Entity
-@Table(name = "user")
+@Table(name="user")
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="user_id")
 	private Integer userId;
-
-	@Column(name = "first_name")
+	
+	@Column(name="first_name")
 	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
-
-	@Column(name = "address")
+	
+	@Column(name="last_name")
+	private String LastName;
+	
+	@Column(name="address")
 	private String address;
-
-	@Column(name = "contact_no")
+	
+	@Column(name="contact_no")
 	private String contactNo;
+	
+	@Column(name="username")
+	private String username;
+	
+	@Column(name="password")
+	private String password;
+	
+	@Column(name="role")
+	private String role;
 
 	public Integer getUserId() {
 		return userId;
@@ -51,11 +59,11 @@ public class User {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return LastName;
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		LastName = lastName;
 	}
 
 	public String getAddress() {
@@ -66,6 +74,16 @@ public class User {
 		this.address = address;
 	}
 
+	public String getPhoneNo() {
+		return contactNo;
+	}
+
+	public void setPhoneNo(String phoneNo) {
+		this.contactNo = phoneNo;
+	}
+	
+	
+
 	public String getContactNo() {
 		return contactNo;
 	}
@@ -74,9 +92,33 @@ public class User {
 		this.contactNo = contactNo;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + lastName + ", address=" + address
-				+ ", contactNo=" + contactNo + "]";
+		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + LastName + ", address=" + address
+				+ ", contactNo=" + contactNo +  "]";
 	}
 }

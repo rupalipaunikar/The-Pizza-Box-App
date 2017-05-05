@@ -1,35 +1,49 @@
 package com.pizzabox.common.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.pizzabox.common.constants.ItemType;
 
 
 /**
- * Represents details of a suborder specific to the item being processed.
- * Each suborder is a part of an order
- *  
+ * Represents details of a suborder specific to the item being processed. Each
+ * suborder is a part of an order
+ * 
  * @author rupalip
  *
  */
 @Entity
 @Table(name = "suborder_details")
-public class SubOrder {
+public class SubOrder implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "suborder_id")
 	private Integer id;
 
-	@OneToOne
-	@JoinColumn(name = "item_id")
-	private Item item;
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "type")
+	private ItemType subOrderType;
 
 	@Column(name = "quantity")
 	private Integer quantity;
@@ -38,9 +52,26 @@ public class SubOrder {
 	private Double amount;
 
 	@ManyToOne
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "order_id", insertable = true, updatable = true)
 	private Order order;
-	
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "suborders_items", joinColumns = @JoinColumn(name = "suborder_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
+	//uniqueConstraints=@UniqueConstraint(columnNames = { "suborder_id" ,"item_id"}))
+	private List<Item> items = new ArrayList<Item>();
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public void addToItems(Item item) {
+		this.items.add(item);
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -57,14 +88,6 @@ public class SubOrder {
 		this.quantity = quantity;
 	}
 
-	public Item getItem() {
-		return item;
-	}
-
-	public void setItem(Item item) {
-		this.item = item;
-	}
-
 	public Double getAmount() {
 		return amount;
 	}
@@ -73,9 +96,26 @@ public class SubOrder {
 		this.amount = amount;
 	}
 
-	@Override
-	public String toString() {
-		return "SubOrder [id=" + id + ", item=" + item + ", quantity=" + quantity + ", amount=" + amount + ", order="
-				+ order + "]";
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	// @Override
+	// public String toString() {
+	// return "SubOrder [id=" + id + ", Type=" + subOrderType + ", quantity=" +
+	// quantity + ", amount=" + amount
+	// + ", order=" + order + "]";
+	// }
+
+	public ItemType getSubOrderType() {
+		return subOrderType;
+	}
+
+	public void setSubOrderType(ItemType subOrderType) {
+		this.subOrderType = subOrderType;
 	}
 }

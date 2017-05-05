@@ -20,5 +20,5 @@ public interface ItemService {
 	 * 
 	 * @return map
 	 */
-	Map<String, List<Item>> createInitialItemDataMap();
+	List<Item> createInitialList();
 }

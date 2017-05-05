@@ -27,18 +27,14 @@ public class ItemServiceImpl implements ItemService {
 	@Autowired
 	private ItemDAO itemDAO;
 	
-	public Map<String, List<Item>> createInitialItemDataMap() {
-		LOG.info("Starting creation of items map.");
+	public List<Item> createInitialList() {
+		LOG.info("Starting creation of items list.");
 	
-		List<Item> items = itemDAO.getAllItems();
+		List<Item> itemsList = itemDAO.getAllItems();
 		
-		Map<String, List<Item>> itemsMap = new HashMap<String, List<Item>>();
-		for(Item item : items){
-			populateItemsMap(itemsMap, item);
-		}
 		
 		LOG.info("Completed creation of items map.");
-		return itemsMap;
+		return itemsList;
 	}
 	
 	/**

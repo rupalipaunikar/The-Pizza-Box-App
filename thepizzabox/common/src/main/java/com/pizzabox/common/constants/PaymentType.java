@@ -2,7 +2,6 @@ package com.pizzabox.common.constants;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * This enum holds values for the payment method which a user can opt for
  * 
@@ -11,7 +10,7 @@ import org.apache.log4j.Logger;
  */
 public enum PaymentType {
 
-	CASH(0), ONLINE(1);
+	CASH(0), ONLINE(1), NOTSELECTED(2);
 
 	private static final Logger LOG = Logger.getLogger(PaymentType.class);
 	

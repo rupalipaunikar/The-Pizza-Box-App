@@ -1,11 +1,14 @@
 package com.pizzabox.common.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +20,8 @@ import javax.persistence.Table;
 import com.pizzabox.common.constants.PaymentType;
 import com.pizzabox.common.constants.Status;
 
+
+
 /**
  * Represents an order which can have multiple suborders
  * 
@@ -25,8 +30,9 @@ import com.pizzabox.common.constants.Status;
  */
 @Entity
 @Table(name="order_details")
-public class Order {
+public class Order implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="order_id")
@@ -38,7 +44,7 @@ public class Order {
 	@Column(name="status")
 	private Status status;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<SubOrder> subOrders = new ArrayList<SubOrder>(0);
 	
 	@Column(name="total_amount")
@@ -86,6 +92,11 @@ public class Order {
 		this.subOrders = subOrders;
 	}
 
+	public void addToSubOrders(SubOrder subOrder) {
+		subOrder.setOrder(this);
+        this.subOrders.add(subOrder);
+    }
+	
 	public Double getTotalAmount() {
 		return totalAmount;
 	}
@@ -118,10 +129,10 @@ public class Order {
 		this.updatedTimestamp = updatedTimestamp;
 	}
 
-	@Override
-	public String toString() {
-		return "Order [id=" + id + ", paymentType=" + paymentType + ", status=" + status + ", subOrders=" + subOrders
-				+ ", totalAmount=" + totalAmount + ", user=" + user + ", createdTimestamp=" + createdTimestamp
-				+ ", updatedTimestamp=" + updatedTimestamp + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Order [id=" + id + ", paymentType=" + paymentType + ", status=" + status + ", subOrders=" + subOrders
+//				+ ", totalAmount=" + totalAmount + ", user=" + user + ", createdTimestamp=" + createdTimestamp
+//				+ ", updatedTimestamp=" + updatedTimestamp + "]";
+//	}
 }

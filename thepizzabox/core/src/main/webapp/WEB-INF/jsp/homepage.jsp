@@ -103,73 +103,31 @@
 			<div class="content-md container">
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
-						<form name='loginForm' action="makeorder" method="post">
-						
-						<%-- <c:forEach var="item" items="${ItemList}">
-						<c:out value="${item.type}"/>
-							<c:if test="${item.type=='PIZZA'}">
-							
-													<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="checkbox" name="itemChechBox" value='<c:out value="${item.itemId}"/>' />
+						<form:form name='loginForm' action="makeOrder" method="post" modelAtrribute="itemWrapper">
+					<table>
+   						 <c:forEach items="${itemWrapper.itemList}" var="item" varStatus="status"> 
+   						
+							<tr>
+								<td>
+								<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
+													<input type="checkbox" name="itemCheckBox" value='<c:out value="${item.itemId}"/>' />
 													<c:out value="${item.name}" /></label>
-													<input type="text" name="quantity" value='<c:out value="${item.quantity}"/>' />
-											<input type="text" name="name" value='<c:out value="${item.name}"/>'/>
-											<input type="text" name="price" value='<c:out value="${item.price}"/>' />
-											<input type="text" name="type" value='<c:out value="${item.type}"/>'/>
-											</c:if>
-						</c:forEach> --%>
+								</td>
+								
+								<td><input name="itemList[${status.index}].quantity" value="${item.quantity}" type ="text"/></td>
+								
+							</tr>
+							<td><input name="itemList[${status.index}].itemId" value="${item.itemId}" type ="hidden"/></td>
+								<td><input name="itemList[${status.index}].name" value="${item.name}" type ="hidden"/></td>
+								<td><input name="itemList[${status.index}].price" value="${item.price}" type ="hidden"/></td>
+								<td><input name="itemList[${status.index}].type" value="${item.type}" type ="hidden"/></td>
+						</c:forEach>
+						</table>
 						
-<%-- 						 <c:forEach var="item" items="${ItemList}" varStatus="status"> --%>
-<%-- 						 	<c:if test="${item.type=='PIZZA'}"> --%>
-<%--         <form:input path="item[${status.index}].name" name="name" value="${item.name}" /> --%>
-<%--         <form:input path="item[${status.index}].quantity" name="quantity" value="${item.quantity}" /> --%>
-<%--         </c:if> --%>
-<%--         </c:forEach> --%>
-						
-							<%-- <c:forEach var="itemTypeMap" items="${ItemTypeMap}">
-								<fieldset style="border-width: 6px">
-									<legend>
-										<c:out value="${itemTypeMap.key}" />
-									</legend>
-									<table>
-										<c:forEach var="item" items="${itemTypeMap.value}">
-										
-											<tr>
-												<td >
-													<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="checkbox" name="itemChechBox" value='<c:out value="${item.itemId}"/>' />
-													<c:out value="${item.name}" /></label>
-												</td>
-												<td>
-												&nbsp;
-												</td>
-												<td>
-												&nbsp;
-												</td>
-												
-												<td>	
-													<input type="text" name="quantity" value='<c:out value="${item.quantity}"/>' />
-												</td>
-											</tr>	
-											<input type="hidden" name="name" value='<c:out value="${item.name}"/>'/>
-											<input type="hidden" name="price" value='<c:out value="${item.price}"/>' />
-											<input type="hidden" name="type" value='<c:out value="${item.type}"/>'/>
-											
-											
-											
-										</c:forEach>
-									</table>
-								</fieldset>
-								<br>
-							</c:forEach> --%>
-							
-						
-							<input type="submit" id="payment" name="Proceed for Payment"
+							<input type="submit" id="makeOrder" name="Proceed for Payment"
 								onclick="validateform()" value="Proceed for Payment"
 								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
-						</form>
-						
-						
+						</form:form>
 					</div>
 				</div>
 			</div>

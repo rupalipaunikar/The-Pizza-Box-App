@@ -1,5 +1,8 @@
 package com.pizzabox.common.model;
 
+
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.pizzabox.common.constants.ItemType;
+
 
 /**
  * Represents items such as pizza, side dishes and beverages
@@ -19,10 +24,10 @@ import com.pizzabox.common.constants.ItemType;
  */
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue
 	@Column(name = "item_id")
 	private Integer itemId;
 
@@ -37,6 +42,7 @@ public class Item {
 	private Double price;
 	
 	@Column(name = "quantity")
+	@Transient
 	private Integer quantity;
 
 	public Item() {
