@@ -26,6 +26,7 @@
 
 <!-- PAGE LEVEL PLUGIN STYLES -->
 <link href="css/animate.css" rel="stylesheet">
+<link href="css/tableStyle.css" rel="stylesheet">
 <link href="vendor/swiper/css/swiper.min.css" rel="stylesheet"
 	type="text/css" />
 
@@ -103,50 +104,68 @@
 			<div class="content-md container">
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
-						<form:form name='loginForm' action="http://localhost:8080/payment/makepayment" method="post"
-							modelAtrribute="order">
-							<table>
+						<form name='loginForm'
+							action="http://localhost:8080/payment/makepayment" method="post">
+
+
+							<table cellpadding="10" border="1">
+								<caption>
+									<h1>Review your Order</h1>
+								</caption>
 								<tr>
-									<td>Your have Ordered</td>
-									<td>
+									<th>Item Ordered</th>
+									<th>Price</th>
+									<th>Quantity</th>
 								</tr>
+								<c:forEach var="itemList" items="${finalOrderList}">
+									<tr>
+										<td><c:out value="${itemList.name}" /></td>
+										<td><c:out value="${itemList.price}" /></td>
+										<td><c:out value="${itemList.quantity}" /></td>
+									</tr>
+								</c:forEach>
 								<tr>
-									<td>The Total Amount is :</td>
-									<td>${order.totalAmount}</td>
-								</tr>
+								<td>The Total Amount is :</td>
+								<td><strong><input type="hidden" name="totalAmount"
+									value="<c:out value='${order.totalAmount}'/>" /> <c:out
+										value='${order.totalAmount}' /></strong></td>
+							</tr>
 							</table>
-							<input name="id" value="${order.id}" type="hidden" />
-							<input name="status" value="${order.status}" type="hidden" />
-							<input name="paymentType" value="${order.paymentType}"
-								type="hidden" />
-							<input name="totalAmount" value="${order.totalAmount}"
-								type="hidden" />
-							<input name="user" value="${order.user}" type="hidden" />
-							<input name="subOrders" value="${order.subOrders}" type="hidden" />
 
-							<c:forEach items="${order.subOrders}" var="subOrder" varStatus="status"> 
+							<input name="id"
+								value="<c:out value='${order.id}'/>" type="hidden" /> <input
+								name="status" value="<c:out value='${order.status}'/>"
+								type="hidden" /> <input name="paymentType"
+								value="<c:out value='${order.paymentType}'/>" type="hidden" />
+							<input name="totalAmount"
+								value="<c:out value='${order.totalAmount}'/>" type="hidden" />
+
+							<c:set var="user" value="${order.user}" />
+							<input name="userId"
+								value="<c:out value='${order.user.userId}'/>" type="hidden" />
+							<input name="username"
+								value="<c:out value='${order.user.username}'/>" type="hidden" />
+
+
+
+
+							<c:forEach items="${order.subOrders}" var="subOrder"
+								varStatus="status">
 								<input name="subOrders[${status.index}].id"
-									value="${subOrder.id}" type="hidden" />
+									value="<c:out value='${subOrder.id}'/>" type="hidden" />
 								<input name="subOrders[${status.index}].subOrderType"
-									value="${subOrder.subOrderType}" type="hidden" />
+									value="<c:out value='${subOrder.subOrderType}'/>" type="hidden" />
 								<input name="subOrders[${status.index}].quantity"
-									value="${subOrder.quantity}" type="hidden" />
+									value="<c:out value='${subOrder.quantity}'/>" type="hidden" />
 								<input name="subOrders[${status.index}].amount"
-									value="${subOrder.amount}" type="hidden" />
-								<!-- Inner Loop starts -->	
-									<c:forEach items="${subOrder.items}" var="item" varStatus="status"> 
-										<input name="items[${status.index}].itemId"
-											value="${item.itemId}" type="hidden" />
-										<input name="items[${status.index}].name"
-											value="${item.name}" type="hidden" />
-										<input name="items[${status.index}].type"
-											value="${item.price}" type="hidden" />
-									</c:forEach>
-								<!-- Inner Loop Ends -->
+									value="<c:out value='${subOrder.amount}'/>" type="hidden" />
 							</c:forEach>
-
-							<input type="submit" value="Submit"/>
-						</form:form>
+							
+							<br> <input type="submit" id="makeOrder"
+								name="Proceed for Payment" onclick="validateform()"
+								value="Proceed for Payment"
+								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
+						</form>
 					</div>
 				</div>
 			</div>

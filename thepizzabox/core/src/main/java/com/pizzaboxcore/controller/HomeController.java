@@ -9,10 +9,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,8 +94,8 @@ public class HomeController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(value = "/makeOrder", method = RequestMethod.POST)
-	public ModelAndView makeOrder(@ModelAttribute("itemWrapper") final ItemWrapper itemWrapper,
-			final HttpServletRequest request, Principal principalUserObject, ModelMap model) {
+	public String makeOrder(@ModelAttribute("itemWrapper") final ItemWrapper itemWrapper,
+			final HttpServletRequest request, Principal principalUserObject, Model model) {
 
 		final String[] selectedCheckBox = request.getParameterValues("itemCheckBox");
 		List<Integer> checkBoxList = new ArrayList<Integer>();
@@ -107,7 +105,6 @@ public class HomeController {
 		}
 
 		final List<Item> itemList = itemWrapper.getItemList();
-
 		final List<Item> finalOrderList = new ArrayList<Item>();
 
 		Iterator<Item> iterator = itemList.iterator();
@@ -141,10 +138,16 @@ public class HomeController {
 
 		final User user = orderService.getUserDetails(principalUserObject);
 		Order order = orderService.generateOrder(finalOrderList, totalPrice, user);
-		return new ModelAndView("paymentgateway", "order", order);
-
-
-
+		model.addAttribute("order",order);
+		model.addAttribute("finalOrderList",finalOrderList);
+		return "paymentgateway";
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	public String testForm(@ModelAttribute("order")Order order,@ModelAttribute("user") User user) {
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		System.out.println(order.getTotalAmount());
+		return null;
 	}
 
 }
