@@ -143,11 +143,8 @@ public class HomeController {
 		return "paymentgateway";
 	}
 	
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	public String testForm(@ModelAttribute("order")Order order,@ModelAttribute("user") User user) {
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-		System.out.println(order.getTotalAmount());
-		return null;
-	}
+
+
+
 
 }

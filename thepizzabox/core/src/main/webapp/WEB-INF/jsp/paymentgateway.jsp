@@ -39,6 +39,7 @@
 
 </head>
 <body>
+<<<<<<< HEAD
 	<!--========== HEADER ==========-->
 	<header class="header"> <!-- Navbar --> <nav class="navbar"
 		role="navigation">
@@ -261,6 +262,5 @@
 	<script src="js/components/wow.min.js" type="text/javascript"></script>
 	<script src="js/components/swiper.min.js" type="text/javascript"></script>
 	<script src="js/components/masonry.min.js" type="text/javascript"></script>
-
 </body>
 </html>
