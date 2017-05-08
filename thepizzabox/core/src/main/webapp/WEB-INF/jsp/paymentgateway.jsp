@@ -27,18 +27,11 @@
                     <td><form:label path="paymentType">Payment Type</form:label></td>
                     <td><form:input path="paymentType"/></td>
                 </tr>
-                
-                
-            </table>
-            
-<%-- 		<form:input type="text" name="orderid" value="${order.id }"/>  --%>
-<%-- 		<form:input type="text" name="orderpaymentType" value="${order.paymentType}"/> --%>
-<%-- 		<form:input type="text" name="orderstatus" value="${order.status }"/> --%>
-<%-- 		<form:input type="text" name="subOrders" value="${order.subOrders }"/> --%>
-<%-- 		<form:input type="text" name="totalAmount" value="${order.totalAmount }"/> --%>
-<%-- 		<form:input type="text" name="user" value="${order.user }"/> --%>
-<%-- 		<form:input type="text" name="createdTimestamp" value="${order.createdTimestamp }"/> --%>
-<%-- 		<form:input type="text" name="updatedTimestamp" value="${order.updatedTimestamp }"/> --%>
+                <tr>
+                    <td><form:label path="totalAmount">Total Amount</form:label></td>
+                    <td><form:input path="totalAmount"/></td>
+                </tr>
+        </table>
 		
 		<input type="submit" id="payment" name="Make Payment"
 			onclick="validateform()" value="Make Payment"

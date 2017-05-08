@@ -65,6 +65,7 @@ public class HomeController {
 		Order order = new Order();
 		order.setId(1);
 		order.setStatus(Status.SUBMITTED);
+		order.setTotalAmount(1000.00);
 		
 		User user = new User();
 		user.setFirstName("Rupali");
@@ -73,6 +74,8 @@ public class HomeController {
 		user.setAddress("Pune");
 		
 		order.setUser(user);
+		
+		System.out.println(order);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("order",order);

@@ -74,6 +74,10 @@ public class User {
 		this.contactNo = contactNo;
 	}
 
+	public String getFullName(){
+		return firstName + " " + lastName;
+	}
+	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + lastName + ", address=" + address
