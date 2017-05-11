@@ -1,18 +1,26 @@
 package com.payment.data;
 
 import com.pizzabox.common.model.CardDetails;
+import com.pizzabox.common.model.Order;
 
+/**
+ * This is a wrapper class for the messaging system to work with
+ * 
+ * @author rupalip
+ *
+ */
 public class PaymentDetails {
 
 	private CardDetails cardDetails;
-	private Double totalAmount;
+	private Order order;
+	private PaymentResultStatus paymentResultStatus;
 
 	public PaymentDetails() {}
-	
-	public PaymentDetails(CardDetails cardDetails, Double totalAmount) {
+
+	public PaymentDetails(CardDetails cardDetails, Order order) {
 		super();
 		this.cardDetails = cardDetails;
-		this.totalAmount = totalAmount;
+		this.order = order;
 	}
 
 	public CardDetails getCardDetails() {
@@ -23,12 +31,26 @@ public class PaymentDetails {
 		this.cardDetails = cardDetails;
 	}
 
-	public Double getTotalAmount() {
-		return totalAmount;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setTotalAmount(Double totalAmount) {
-		this.totalAmount = totalAmount;
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public PaymentResultStatus getPaymentResultStatus() {
+		return paymentResultStatus;
+	}
+
+	public void setPaymentResultStatus(PaymentResultStatus paymentResultStatus) {
+		this.paymentResultStatus = paymentResultStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "PaymentDetails [cardDetails=" + cardDetails + ", order=" + order + ", paymentResultStatus="
+				+ paymentResultStatus + "]";
 	}
 
 }

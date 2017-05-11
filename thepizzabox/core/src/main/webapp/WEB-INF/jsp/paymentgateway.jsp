@@ -39,7 +39,6 @@
 
 </head>
 <body>
-<<<<<<< HEAD
 	<!--========== HEADER ==========-->
 	<header class="header"> <!-- Navbar --> <nav class="navbar"
 		role="navigation">

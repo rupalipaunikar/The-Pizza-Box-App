@@ -16,6 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.pizzabox.common.constants.PaymentType;
 import com.pizzabox.common.constants.Status;
@@ -38,6 +41,7 @@ public class Order implements Serializable {
 	@Column(name="order_id")
 	private Integer id;
 	
+	@NotNull(message="Please select ")
 	@Column(name="payment_type")
 	private PaymentType paymentType;
 	
@@ -68,6 +72,8 @@ public class Order implements Serializable {
 		this.id = id;
 	}
 
+	//@NotBlank(message="Please select ")
+	//@NotNull(message="Please select ")
 	public PaymentType getPaymentType() {
 		return paymentType;
 	}
@@ -129,10 +135,10 @@ public class Order implements Serializable {
 		this.updatedTimestamp = updatedTimestamp;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Order [id=" + id + ", paymentType=" + paymentType + ", status=" + status + ", subOrders=" + subOrders
-//				+ ", totalAmount=" + totalAmount + ", user=" + user + ", createdTimestamp=" + createdTimestamp
-//				+ ", updatedTimestamp=" + updatedTimestamp + "]";
-//	}
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", paymentType=" + paymentType + ", status=" + status 
+				+ ", totalAmount=" + totalAmount + ", user=" + user + ", createdTimestamp=" + createdTimestamp
+				+ ", updatedTimestamp=" + updatedTimestamp + "]";
+	}
 }

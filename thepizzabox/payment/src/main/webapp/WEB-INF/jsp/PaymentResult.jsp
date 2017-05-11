@@ -36,6 +36,32 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <title>Home Page</title>
 
+<style type="text/css">
+table.hovertable {
+	font-family: verdana,arial,sans-serif;
+	font-size:14px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+table.hovertable th {
+	background-color:#c3dde0;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.hovertable tr {
+	background-color:#d4e3e5;
+}
+table.hovertable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+</style>
 </head>
 <body>
 	<!--========== HEADER ==========-->
@@ -102,12 +128,66 @@
 		<div class="section-seperator">
 			<div class="content-md container">
 				<div class="row">
-					<div class="col-sm-4 sm-margin-b-50">Payment is successful</div>
+					<div class="col-sm-4 sm-margin-b-50">
+						<div align="center" style="">
+							<caption>
+									<h2>Invoice</h2>
+									
+							</caption>
+							
+						</div>
+							<div align="left">
+								<h3>Hello <c:out value="${invoice.username} "/>, Your invoice details </h3>
+							</div>
+							
+							<table class="hovertable">
+								<tr onmouseover="this.style.backgroundColor='#f08080';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+									<td>Invoice ID</td>     
+									<td><c:out value="${invoice.id} "/></td>
+								</tr>
+								<tr onmouseover="this.style.backgroundColor='#f08080';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+									<td>Order ID</td>     
+									<td><c:out value="${invoice.orderId} "/></td>
+								</tr>
+								<tr onmouseover="this.style.backgroundColor='#f08080';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+									<td>Total Amount</td>     
+									<td><c:out value="${invoice.amount} "/></td>
+								</tr>
+								<tr onmouseover="this.style.backgroundColor='#f08080';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+									<td>Time</td>     
+									<td><c:out value="${invoice.invoiceTimestamp} "/></td>
+								</tr>
+								<tr onmouseover="this.style.backgroundColor='#f08080';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+									<td>Mode of payment</td>     
+									<td><c:out value="${invoice.paymentType} "/></td>
+								</tr>
+								<tr onmouseover="this.style.backgroundColor='#f08080';" onmouseout="this.style.backgroundColor='#d4e3e5';">
+									<td>Status</td>     
+									<td><c:out value="${invoice.transactionStatus} "/></td>
+								</tr>
+								
+							</table>
+							
+<!-- 							<table cellpadding="10" border="1"> -->
+<!-- 								<tr> -->
+<!-- 									<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;"> -->
+										
+<%-- 										Invoice ID     :- <c:out value="${invoice.id} "/><br> --%>
+<%-- 										Order ID       :- <c:out value="${invoice.orderId} "/><br> --%>
+<%-- 										Total Amount   :- <c:out value="${invoice.amount} "/><br> --%>
+<%-- 										Time           :- <c:out value="${invoice.invoiceTimestamp} "/><br> --%>
+<%-- 										Mode of payment:- <c:out value="${invoice.paymentType} "/><br> --%>
+<%-- 										Status         :- <c:out value="${invoice.transactionStatus} "/><br> --%>
+<!-- 									</label> -->
+<!-- 							</table> -->
+					</div>
+					
 				</div>
 			</div>
 			<!--// end row -->
 		</div>
 	</div>
+
 
 
 	<!--========== FOOTER ==========-->

@@ -1,11 +1,10 @@
 package com.payment.gateway;
 
-import org.springframework.web.servlet.ModelAndView;
-
-import com.pizzabox.common.model.Order;
+import com.payment.data.Invoice;
+import com.payment.data.PaymentDetails;
 
 /**
- * Payment Gateway acts as a gateway to payment-flow.xml to initiate the
+ * This class acts as a gateway to payment-flow.xml to initiate the
  * payment 
  * 
  * @author rupalip
@@ -17,7 +16,7 @@ public interface PaymentGateway {
 	 * This API initiates the payment flow 
 	 * 
 	 * @param order
-	 * @return success | failure
+	 * @return invoice
 	 */
-	String makePayment(Order order);
+	Invoice makePayment(PaymentDetails paymentDetails);
 }

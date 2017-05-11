@@ -19,6 +19,7 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	
+	<!-- move to common -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -27,6 +28,7 @@
 		<property name="password" value="root" />
 	</bean>
 	
+	<!-- move to common -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -37,46 +39,51 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
 				</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+<!-- 				<prop key="hibernate.hbm2ddl.auto">update</prop> -->
 			</props>
 		</property>
 	</bean>
-	
+	<context:annotation-config />
+	<context:component-scan base-package="com.payment" />
 	
 	<int:channel id="paymentRequestChannel" />
-	<int:channel id="paymentReplyChannel" />
-	<int:channel id="cashChannel" />
-	<int:channel id="onlineChannel" />
-	<int:channel id="outputChannel" />
-	<int:channel id="jdbcOutChannel" />
-	<int:channel id="jsonOutchannel" />
+	<int:channel id="paymentReplyChannel" /> 
+	<int:publish-subscribe-channel id="cashChannel"/>
+	<int:publish-subscribe-channel id="onlineChannel"/>
+	<int:channel id="jdbcUpdateChannel"/>
 
 	<!-- Entry point -->
-	<int:gateway id="paymentGateway" service-interface="com.payment.gateway.PaymentGateway"
-		default-request-channel="paymentRequestChannel" default-reply-channel="paymentReplyChannel" />
+	<int:gateway id="paymentGateway" 
+				 service-interface="com.payment.gateway.PaymentGateway"
+				 default-request-channel="paymentRequestChannel" 
+				 default-reply-channel="paymentReplyChannel"/>
 
 	<!-- Route to either cash or online channel -->
 	<int:router input-channel="paymentRequestChannel">
 		<bean id="paymentModeRouter" class="com.payment.router.PaymentModeRouter" />
 	</int:router>
 
-	<int:chain input-channel="onlineChannel">
-		<!-- Add content-type header for messages to be routed to online channel -->
-		<int:header-enricher>
-			<int:header name="Content-Type" value="application/json" />
-		</int:header-enricher>
 
-		<!-- Call the REST web service to fulfill the payment functionality -->
-		<http:outbound-gateway
-			url="http://localhost:8080/payment/paypal/makepayment" http-method="POST"
-			expected-response-type="java.lang.String" />
-
+	
+	<!-- Cash channel flow  -->
+	
+	<int:transformer input-channel="cashChannel" ref="invoiceCreator" output-channel="paymentReplyChannel"/>
+	
+ 	<int-jdbc:outbound-channel-adapter channel="cashChannel" 
+							   data-source="dataSource"
+							   query="update order_details set payment_type = :payload.order.paymentType.type, status = 2 where order_id = :payload.order.id"/>
+					
+	
+	<!-- Online channel flow  -->
+	<int:chain input-channel="onlineChannel" output-channel="paymentReplyChannel">
+		<int:service-activator ref="paymentProcessor"/>
+		<int:transformer ref="invoiceCreator"/>
 	</int:chain>
 	
-	<int-jdbc:outbound-gateway
-		request-channel="cashChannel" data-source="dataSource" reply-channel="jdbcOutChannel"
-		update="update item set name='TEST' where item_id=1" query="select * from item where item_id=1"/>
-		
-	<int:object-to-string-transformer input-channel="jdbcOutChannel" output-channel="paymentReplyChannel"/>
+	
+	<int-jdbc:outbound-channel-adapter channel="onlineChannel" 
+							   data-source="dataSource"
+							   query="update order_details set payment_type = :payload.order.paymentType.type where order_id = :payload.order.id"/>
 
 </beans>

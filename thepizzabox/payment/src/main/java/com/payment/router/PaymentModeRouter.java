@@ -2,9 +2,9 @@ package com.payment.router;
 
 import org.apache.log4j.Logger;
 
+import com.payment.data.PaymentDetails;
 import com.pizzabox.common.constants.Constants;
 import com.pizzabox.common.constants.PaymentType;
-import com.pizzabox.common.model.Order;
 
 /**
  * This is a custom router used for routing the orders to cash or online 
@@ -17,10 +17,16 @@ public class PaymentModeRouter {
 
 	private static final Logger LOG = Logger.getLogger(PaymentModeRouter.class);
 	
-	public String route(Order order){
-		String destinationChannel = ((order.getPaymentType() == PaymentType.CASH)? Constants.CASH_CHANNEL : Constants.ONLINE_CHANNEL);
+	/**
+	 * Routes order based on their payment type
+	 * 
+	 * @param order
+	 * @return channel
+	 */
+	public String route(PaymentDetails paymentDetails){
+		String destinationChannel = ((paymentDetails.getOrder().getPaymentType() == PaymentType.CASH)? Constants.CASH_CHANNEL : Constants.ONLINE_CHANNEL);
 		
-		LOG.info("Routing order ID["+order.getId()+"] to ["+destinationChannel+"] channel");
+		LOG.info("Routing order ID["+paymentDetails.getOrder().getId()+"] to ["+destinationChannel+"] channel");
 		return destinationChannel;
 	}
 }

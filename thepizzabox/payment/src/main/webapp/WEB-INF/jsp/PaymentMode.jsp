@@ -36,6 +36,20 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <title>Home Page</title>
 
+<script type="text/javascript">
+ function validateForm() {
+     var radios = document.getElementsByName("paymentType");
+     var formValid = false;
+     var i = 0;
+     while (!formValid && i < radios.length) {
+         if (radios[i].checked) formValid = true;
+         i++;        
+     }
+
+     if (!formValid) alert("Please choose a payment mode!");
+     return formValid;
+ }
+</script>
 </head>
 <body>
 	<!--========== HEADER ==========-->
@@ -104,41 +118,68 @@
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
 						<div align="center" style="">
-							Please select the type of payment
+							<h3>Please select the type of payment</h3>
 						</div>
-						<form:form name='paymentMode' action="initiate" method="post"
-							modelAttribute="order">
+						<h5 align="left">
+							<c:out value="${Error}"></c:out>
+						</h5>
+
+						<form name='paymentMode' action="submit" method="post" onsubmit="return validateForm()">
 
 							<table>
 								<tr>
-									<td><form:hidden path="id" /></td>
+									<td><input type="hidden" name="id" value="${order.id}" /></td>
+								<tr>
+									<td><input type="hidden" name="status" value="${order.status}" /></td>
 								</tr>
 								<tr>
-									<td><form:hidden path="status" /></td>
+									<td><input type="hidden" name="totalAmount" value="${order.totalAmount}" /></td>
 								</tr>
 								<tr>
-									<td><form:hidden path="totalAmount" /></td>
+									<td><input type="hidden" name="userId" value="${user.userId}" /></td>
 								</tr>
-								<div>
-									<tr>
-										<form:radiobutton path="paymentType" value="CASH" label="Cash" />
-
-									</tr>
-								</div>
-								<div>
-									<tr>
-										<form:radiobutton path="paymentType" value="ONLINE"
-										label="Online" />
-									</tr>
-								</div>
+								<tr>
+									<td><input type="hidden" name="username" value="${user.username}" /></td>
+								</tr>
+								<tr>
+									<td>
+									<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
+													<input type="radio" name="paymentType" value="CASH" />
+													Cash On Delivery</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+									<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
+													<input type="radio" name="paymentType" value="ONLINE" />
+													Online</label>
+									</td>
+								</tr>
 
 							</table>
 
+							<table>
+								<tr>
+									<td>Enter your 16 digit card number :</td>
+       								<td><input type="text" name="cardNumber" value="${cardDetails.cardNumber}" /></td>
+								</tr>
+								<tr>
+									<td>Expiry Date :</td>
+       								<td><input type="text" name="expiryDate" value="${cardDetails.expiryDate}" /></td>
+								</tr>
+								<tr>
+									<td>CVV :</td>
+        							<td><input type="password" name="cvv" value="${cardDetails.cvv}" /></td>
+								</tr>
+								<tr>
+									<td>Total Amount :</td>
+        							<td><input type="text" name="totalAmount" value="${order.totalAmount}" /></td>
+								</tr>
+							</table>
 							<input type="submit" id="paymentMode" name="Choose payment mode"
 								onclick="validateform()" value="Continue"
 								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 14px; margin: 4px 2px; cursor: pointer;" />
-						</form:form>
-
+						</form>
 
 					</div>
 				</div>
