@@ -13,14 +13,16 @@ public class PaymentDetails {
 
 	private CardDetails cardDetails;
 	private Order order;
-	private PaymentResultStatus paymentResultStatus;
+	private PaymentResult paymentResult;
 
-	public PaymentDetails() {}
+	public PaymentDetails() {
+	}
 
-	public PaymentDetails(CardDetails cardDetails, Order order) {
+	public PaymentDetails(CardDetails cardDetails, Order order, PaymentResult paymentResult) {
 		super();
 		this.cardDetails = cardDetails;
 		this.order = order;
+		this.paymentResult = paymentResult;
 	}
 
 	public CardDetails getCardDetails() {
@@ -39,18 +41,12 @@ public class PaymentDetails {
 		this.order = order;
 	}
 
-	public PaymentResultStatus getPaymentResultStatus() {
-		return paymentResultStatus;
+	public PaymentResult getPaymentResult() {
+		return paymentResult;
 	}
 
-	public void setPaymentResultStatus(PaymentResultStatus paymentResultStatus) {
-		this.paymentResultStatus = paymentResultStatus;
-	}
-
-	@Override
-	public String toString() {
-		return "PaymentDetails [cardDetails=" + cardDetails + ", order=" + order + ", paymentResultStatus="
-				+ paymentResultStatus + "]";
+	public void setPaymentResult(PaymentResult paymentResult) {
+		this.paymentResult = paymentResult;
 	}
 
 }

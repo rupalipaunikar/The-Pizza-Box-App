@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.payment.data.PaymentDetails;
 import com.payment.data.PaymentResultStatus;
+import com.payment.exception.ErrorCode;
 import com.payment.exception.PaymentProcessException;
 import com.payment.exception.PaymentServiceException;
 import com.payment.service.PaymentService;
@@ -53,12 +54,19 @@ public class PaymentProcessor {
 			paymentService.executePayment(paymentDetails);
 			paymentService.updateOrderStatus(paymentDetails.getOrder().getId(), Status.PAID_ONLINE);
 			
-			paymentDetails.setPaymentResultStatus(PaymentResultStatus.SUCCESS);
-			return paymentDetails;
+			paymentDetails.getPaymentResult().setPaymentResultStatus(PaymentResultStatus.SUCCESS);
 		} 
 		catch (PaymentServiceException e) {
-			LOG.error("Error occurred while processing payment for order ID["+order.getId()+"]");
-			throw new PaymentProcessException(e);
+			String errMsg = "Error occurred while processing payment for order ID["+order.getId()+"]";
+			LOG.error(errMsg);
+			throw new PaymentProcessException(errMsg, e);
 		}
+		catch(Exception e){
+			String errMsg = "Error occurred while processing payment for order ID["+order.getId()+"]";
+			LOG.error(errMsg);
+			paymentDetails.getPaymentResult().setErrorCode(ErrorCode.PAYMENT_PROCESS);
+			throw new PaymentProcessException(errMsg, e);
+		}
+		return paymentDetails;
 	}
 }

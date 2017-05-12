@@ -7,15 +7,6 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-
-	<context:annotation-config />
-	<mvc:annotation-driven />
-
-	<context:component-scan base-package="com.payment" />
-	
-<!-- 	<bean id="paymentValidator" class="com.payment.validator.PaymentValidator"/> -->
-
-<!-- 	<bean id="validationUtils" class="com.payment.validator.ValidationUtils"/> -->
 	
 	<mvc:resources mapping="/css/**" location="/css/" />
 	<mvc:resources mapping="/img/**" location="/img/" />

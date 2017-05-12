@@ -29,7 +29,7 @@ public interface PaymentDAO {
 	 * @return no of rows affected
 	 * @throws DAOException 
 	 */
-	Integer updateBalance(final CardDetails cardDetails, final Double balance) throws DAOException;
+	void updateBalance(final CardDetails cardDetails, final Double balance) throws DAOException;
 	
 	/**
 	 * This API updates the order status with the given status
@@ -39,5 +39,5 @@ public interface PaymentDAO {
 	 * @return no of rows affected
 	 * @throws DAOException 
 	 */
-	Integer updateOrderStatus(final Integer orderId, final Status status) throws DAOException;
+	void updateOrderStatus(final Integer orderId, final Status status) throws DAOException;
 }

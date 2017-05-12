@@ -19,6 +19,7 @@ public class Constants {
 	public static final String CVV = "cvv";
 	public static final String BALANCE = "balance";
 	public static final String ID = "id";
+	public static final String USER_ID = "userId";
 	public static final String INV = "INV";
 	public static final String NO_ERROR = "No Error";
 	

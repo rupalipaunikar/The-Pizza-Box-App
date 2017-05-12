@@ -14,7 +14,11 @@ public class PaymentServiceException extends Exception {
 		super(message);
 	}
 	
-	public PaymentServiceException(Throwable e){
+	public PaymentServiceException(Throwable e ){
 		super(e);
+	}
+	
+	public PaymentServiceException(String message, Throwable e){
+		super(message,e);
 	}
 }

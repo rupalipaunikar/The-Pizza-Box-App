@@ -9,12 +9,13 @@ package com.payment.exception;
 public class PaymentProcessException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	public PaymentProcessException(String message){
 		super(message);
 	}
 	
-	public PaymentProcessException(Throwable e){
-		super(e);
+	public PaymentProcessException(String message, Throwable e){
+		super(message, e);
 	}
+
 }

@@ -24,6 +24,7 @@ public interface PaymentService {
 	 * This API updates the order status with the given status parameter
 	 * 
 	 * @param orderId
+	 * @param userId
 	 * @param status
 	 * @throws PaymentServiceException 
 	 */

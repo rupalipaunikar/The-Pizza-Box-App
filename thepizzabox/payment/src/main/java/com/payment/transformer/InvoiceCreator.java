@@ -84,15 +84,11 @@ public class InvoiceCreator {
 	 * @param paymentDetails
 	 */
 	private void setTransactionStatus(Invoice invoice, PaymentDetails paymentDetails) {
-		PaymentResultStatus paymentResultStatus = paymentDetails.getPaymentResultStatus();
+		PaymentResultStatus paymentResultStatus = paymentDetails.getPaymentResult().getPaymentResultStatus();
 		
 		// setting transaction status for cash payment mode
 		if (paymentResultStatus == null && paymentDetails.getOrder().getPaymentType() == PaymentType.CASH) {
 			invoice.setTransactionStatus(PaymentResultStatus.SUCCESS.toString());
-		}
-		// setting UNKNOWN if paymentResultStatus for error scenario
-		else if(paymentResultStatus == null){
-			invoice.setTransactionStatus(PaymentResultStatus.UNKNOWN.toString());
 		}
 		// setting transaction status for online payment mode
 		else {

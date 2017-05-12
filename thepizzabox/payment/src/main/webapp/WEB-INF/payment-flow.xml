@@ -19,45 +19,21 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	
-	<!-- move to common -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/pizzabox" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
-	</bean>
-	
-	<!-- move to common -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.pizzabox.common.model" />
-
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
-				</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-<!-- 				<prop key="hibernate.hbm2ddl.auto">update</prop> -->
-			</props>
-		</property>
-	</bean>
-	<context:annotation-config />
-	<context:component-scan base-package="com.payment" />
+	<import resource="payment-context.xml"/>
 	
 	<int:channel id="paymentRequestChannel" />
 	<int:channel id="paymentReplyChannel" /> 
 	<int:publish-subscribe-channel id="cashChannel"/>
 	<int:publish-subscribe-channel id="onlineChannel"/>
 	<int:channel id="jdbcUpdateChannel"/>
+	<int:channel id="failedPaymentChannel"/>
 
 	<!-- Entry point -->
 	<int:gateway id="paymentGateway" 
 				 service-interface="com.payment.gateway.PaymentGateway"
 				 default-request-channel="paymentRequestChannel" 
-				 default-reply-channel="paymentReplyChannel"/>
+				 default-reply-channel="paymentReplyChannel"
+				 error-channel="failedPaymentChannel"/>
 
 	<!-- Route to either cash or online channel -->
 	<int:router input-channel="paymentRequestChannel">
@@ -67,23 +43,24 @@
 
 	
 	<!-- Cash channel flow  -->
-	
-	<int:transformer input-channel="cashChannel" ref="invoiceCreator" output-channel="paymentReplyChannel"/>
-	
- 	<int-jdbc:outbound-channel-adapter channel="cashChannel" 
+	<int-jdbc:outbound-channel-adapter channel="cashChannel" 
 							   data-source="dataSource"
 							   query="update order_details set payment_type = :payload.order.paymentType.type, status = 2 where order_id = :payload.order.id"/>
-					
+							   
+	<int:transformer input-channel="cashChannel" ref="invoiceCreator" output-channel="paymentReplyChannel"/>
+	
 	
 	<!-- Online channel flow  -->
+	<int-jdbc:outbound-channel-adapter channel="onlineChannel" 
+							   data-source="dataSource"
+							   query="update order_details set payment_type = :payload.order.paymentType.type where order_id = :payload.order.id"/>
+							   
 	<int:chain input-channel="onlineChannel" output-channel="paymentReplyChannel">
 		<int:service-activator ref="paymentProcessor"/>
 		<int:transformer ref="invoiceCreator"/>
 	</int:chain>
 	
+	<int:service-activator ref="failedPaymentHandler" input-channel="failedPaymentChannel" output-channel="paymentReplyChannel"/>
 	
-	<int-jdbc:outbound-channel-adapter channel="onlineChannel" 
-							   data-source="dataSource"
-							   query="update order_details set payment_type = :payload.order.paymentType.type where order_id = :payload.order.id"/>
 
 </beans>

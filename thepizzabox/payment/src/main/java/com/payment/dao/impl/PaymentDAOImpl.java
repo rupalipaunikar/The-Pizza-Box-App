@@ -25,11 +25,12 @@ public class PaymentDAOImpl implements PaymentDAO {
 
 	private static final Logger LOG = Logger.getLogger(PaymentDAOImpl.class);
 	
-	private static final String _WHERE_CARDNUMBER_EXPIRYDATE_CVV = " where cardNumber=:cardNumber and expiryDate=:expiryDate and cvv=:cvv";
+	private static final String _WHERE_CARDNUMBER_EXPIRYDATE_CVV_USERID = " where cardNumber=:cardNumber and expiryDate=:expiryDate "
+																	+ "and cvv=:cvv and user.userId=:userId";
 	private static final String _WHERE_ID = " where id=:id";
-	private static final String _SELECT_BALANCE = "SELECT balance from CardDetails" + _WHERE_CARDNUMBER_EXPIRYDATE_CVV;
-	private static final String _UPDATE_BALANCE = "UPDATE CardDetails SET balance =:balance"+ _WHERE_CARDNUMBER_EXPIRYDATE_CVV;
-	private static final String _UPDATE_ORDER_STATUS = "UPDATE Order SET status =:status" + _WHERE_ID;
+	private static final String _SELECT_BALANCE = "SELECT balance from CardDetails";
+	private static final String _UPDATE_BALANCE = "UPDATE CardDetails SET balance =:balance";
+	private static final String _UPDATE_ORDER_STATUS = "UPDATE Order SET status =:status";
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -38,10 +39,11 @@ public class PaymentDAOImpl implements PaymentDAO {
 	public Double getBalanceForCard(final CardDetails cardDetails) throws DAOException {
 		String cardNumber = cardDetails.getCardNumber();
 		
-		Query query = sessionFactory.openSession().createQuery(_SELECT_BALANCE)
+		Query query = sessionFactory.openSession().createQuery(_SELECT_BALANCE + _WHERE_CARDNUMBER_EXPIRYDATE_CVV_USERID)
 				.setParameter(Constants.CARD_NUMBER, cardNumber)
 				.setParameter(Constants.EXPIRY_DATE, cardDetails.getExpiryDate())
-				.setParameter(Constants.CVV, cardDetails.getCvv());
+				.setParameter(Constants.CVV, cardDetails.getCvv())
+				.setParameter(Constants.USER_ID, cardDetails.getUser().getUserId());
 		
 		List<?> list = query.list();
 		
@@ -57,13 +59,15 @@ public class PaymentDAOImpl implements PaymentDAO {
 	}
 
 	@Override
-	public Integer updateBalance(final CardDetails cardDetails, final Double balance) throws DAOException {
+	public void updateBalance(final CardDetails cardDetails, final Double balance) throws DAOException {
 		String cardNumber = cardDetails.getCardNumber();
 		
-		Query query = sessionFactory.openSession().createQuery(_UPDATE_BALANCE).setParameter(Constants.BALANCE, balance)
+		Query query = sessionFactory.openSession().createQuery(_UPDATE_BALANCE+_WHERE_CARDNUMBER_EXPIRYDATE_CVV_USERID)
+				.setParameter(Constants.BALANCE, balance)
 				.setParameter(Constants.CARD_NUMBER, cardNumber)
 				.setParameter(Constants.EXPIRY_DATE, cardDetails.getExpiryDate())
-				.setParameter(Constants.CVV, cardDetails.getCvv());
+				.setParameter(Constants.CVV, cardDetails.getCvv())
+				.setParameter(Constants.USER_ID, cardDetails.getUser().getUserId());
 		
 		Integer result = query.executeUpdate();
 		
@@ -74,14 +78,14 @@ public class PaymentDAOImpl implements PaymentDAO {
 		}
 		
 		LOG.info("Successfully updated balance["+balance+"] for card["+cardNumber+"]");
-		return result; 
 	}
 
 	@Override
-	public Integer updateOrderStatus(final Integer orderId, final Status status) throws DAOException {
+	public void updateOrderStatus(final Integer orderId, final Status status) throws DAOException {
 		
-		Query query = sessionFactory.openSession().createQuery(_UPDATE_ORDER_STATUS).setParameter(Constants.STATUS, status)
+		Query query = sessionFactory.openSession().createQuery(_UPDATE_ORDER_STATUS + _WHERE_ID).setParameter(Constants.STATUS, status)
 				.setParameter(Constants.ID, orderId);
+			
 		
 		Integer result = query.executeUpdate();
 		
@@ -92,7 +96,6 @@ public class PaymentDAOImpl implements PaymentDAO {
 		}
 		
 		LOG.info("Successfully updated order status["+status.toString()+"] for orderID["+orderId+"]");
-		return result;
 	}
 
 }

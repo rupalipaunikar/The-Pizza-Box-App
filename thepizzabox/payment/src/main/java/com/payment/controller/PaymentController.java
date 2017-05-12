@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.base.Strings;
 import com.payment.data.Invoice;
 import com.payment.data.PaymentDetails;
+import com.payment.data.PaymentResult;
 import com.payment.exception.PaymentProcessException;
 import com.payment.exception.PaymentValidationException;
 import com.payment.gateway.PaymentGateway;
@@ -92,7 +93,6 @@ public class PaymentController {
 		
 		String resultView = triggerPaymentFlow(order, cardDetails, user, model);
 		return resultView; 
-
 	}
 
 	/**
@@ -107,17 +107,19 @@ public class PaymentController {
 	private String triggerPaymentFlow(Order order, CardDetails cardDetails, User user, Model model) {
 		// prepare payment details to be processed
 		cardDetails.setUser(user);
-		PaymentDetails paymentDetails = new PaymentDetails(cardDetails, order);
+		PaymentDetails paymentDetails = new PaymentDetails(cardDetails, order, new PaymentResult());
 
 		String username = user.getUsername();
 		LOG.info("Initiating the payment flow for user[" + username + "]");
 		// call the payment-flow
 		Invoice invoice = paymentGateway.makePayment(paymentDetails);
 		LOG.info("Payment flow is complete for user[" + username + "]");
-
+		
 		model.addAttribute(Constants.INVOICE, invoice);
 		return Constants.PAYMENT_RESULT;
 	}
+	
+	
 
 	/**
 	 * This is the exception handler for PaymentRequestException
