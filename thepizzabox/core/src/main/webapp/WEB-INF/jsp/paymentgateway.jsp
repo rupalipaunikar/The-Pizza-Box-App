@@ -133,7 +133,9 @@
 							</table>
 
 							<input name="id"
-								value="<c:out value='${order.id}'/>" type="hidden" /> <input
+								value="<c:out value='${order.id}'/>" type="hidden" />
+							
+								 <input
 								name="status" value="<c:out value='${order.status}'/>"
 								type="hidden" /> <input name="paymentType"
 								value="<c:out value='${order.paymentType}'/>" type="hidden" />

@@ -61,9 +61,11 @@ public class OrderServiceImpl implements OrderService {
 		final User user = getUserDetails(username);
 
 		final Order order = orderGenerator.generateOrder(finalItemList, user);
+		
+		Order finalOrder = orderDAO.generateOrder(order);
 
 		LOG.info("Order Created for the user " + order.getUser().getUsername());
-		return order;
+		return finalOrder;
 	}
 
 	/**
