@@ -3,9 +3,11 @@ package com.pizzaboxcore.service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
+import com.pizzabox.common.model.SubOrder;
 import com.pizzabox.common.model.User;
 
 
@@ -26,7 +28,7 @@ public interface OrderService {
 	 * @param totalPrice This is the total Price of the order
 	 * @return Order
 	 */
-	public Order generateOrder(List<Item> itemList,Double totalPrice,User user);
+	public Order generateOrder(List<Item> itemList);
 	
 	/**
 	 * This API is used to get the complete details of the Logged in user 
@@ -34,5 +36,15 @@ public interface OrderService {
 	 * @param user This Principal object contains the name of the logged in user 
 	 * @return User
 	 */
-	public User getUserDetails(Principal user);
+	public User getUserDetails(String username);
+	
+	/**
+	 * This API creates a final list of item based on user selection 
+	 * 	
+	 * @param List<Item> This contains all the items(Pizza,Beverage,Sides)details selected by the user
+	 * @param List<Integer> 
+	 * @return List<Item>
+	 */
+	public List<Item> calculateFinalOrderList(List<Item> itemList,List<Integer> checkBoxList);
+	
 }

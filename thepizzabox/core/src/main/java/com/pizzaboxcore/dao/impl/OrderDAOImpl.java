@@ -40,7 +40,7 @@ public class OrderDAOImpl implements OrderDAO {
 		return user;
 	}
 	
-	public Order generateOrder(Order order){
+	public Order generateOrder(final Order order){
 		LOG.info("Creating Order in the database.");
 		
 		

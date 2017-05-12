@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
-<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en" class="no-js">
 <head>
@@ -26,7 +26,6 @@
 
 <!-- PAGE LEVEL PLUGIN STYLES -->
 <link href="css/animate.css" rel="stylesheet">
-<link href="css/tableStyle.css" rel="stylesheet">
 <link href="vendor/swiper/css/swiper.min.css" rel="stylesheet"
 	type="text/css" />
 
@@ -104,68 +103,32 @@
 			<div class="content-md container">
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
-						<form name='loginForm'
-							action="http://localhost:8080/payment/makepayment" method="post">
-
-
-							<table cellpadding="10" border="1">
-								<caption>
-									<h1>Review your Order</h1>
-								</caption>
-								<tr>
-									<th>Item Ordered</th>
-									<th>Price</th>
-									<th>Quantity</th>
-								</tr>
-								<c:forEach var="itemList" items="${finalItemList}">
-									<tr>
-										<td><c:out value="${itemList.name}" /></td>
-										<td><c:out value="${itemList.price}" /></td>
-										<td><c:out value="${itemList.quantity}" /></td>
-									</tr>
-								</c:forEach>
-								<tr>
-								<td>The Total Amount is :</td>
-								<td><strong><input type="hidden" name="totalAmount"
-									value="<c:out value='${order.totalAmount}'/>" /> <c:out
-										value='${order.totalAmount}' /></strong></td>
+						<form:form name='loginForm' action="makeOrder" method="post" modelAtrribute="itemWrapper">
+					<table>
+   						 <c:forEach items="${itemWrapper.itemList}" var="item" varStatus="status"> 
+   						
+							<tr>
+								<td>
+								<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
+													<input type="checkbox" name="itemCheckBox" value='<c:out value="${item.itemId}"/>' />
+													<c:out value="${item.name}" /></label>
+								</td>
+								
+								<td><input name="itemList[${status.index}].quantity" value="${item.quantity}" type ="text"/></td>
+								
 							</tr>
-							</table>
-
-							<input name="id"
-								value="<c:out value='${order.id}'/>" type="hidden" /> <input
-								name="status" value="<c:out value='${order.status}'/>"
-								type="hidden" /> <input name="paymentType"
-								value="<c:out value='${order.paymentType}'/>" type="hidden" />
-							<input name="totalAmount"
-								value="<c:out value='${order.totalAmount}'/>" type="hidden" />
-
-							<c:set var="user" value="${order.user}" />
-							<input name="userId"
-								value="<c:out value='${order.user.userId}'/>" type="hidden" />
-							<input name="username"
-								value="<c:out value='${order.user.username}'/>" type="hidden" />
-
-
-
-
-							<c:forEach items="${order.subOrders}" var="subOrder"
-								varStatus="status">
-								<input name="subOrders[${status.index}].id"
-									value="<c:out value='${subOrder.id}'/>" type="hidden" />
-								<input name="subOrders[${status.index}].subOrderType"
-									value="<c:out value='${subOrder.subOrderType}'/>" type="hidden" />
-								<input name="subOrders[${status.index}].quantity"
-									value="<c:out value='${subOrder.quantity}'/>" type="hidden" />
-								<input name="subOrders[${status.index}].amount"
-									value="<c:out value='${subOrder.amount}'/>" type="hidden" />
-							</c:forEach>
-							
-							<br> <input type="submit" id="makeOrder"
-								name="Proceed for Payment" onclick="validateform()"
-								value="Proceed for Payment"
+							<td><input name="itemList[${status.index}].itemId" value="${item.itemId}" type ="hidden"/></td>
+								<td><input name="itemList[${status.index}].name" value="${item.name}" type ="hidden"/></td>
+								<td><input name="itemList[${status.index}].price" value="${item.price}" type ="hidden"/></td>
+								<td><input name="itemList[${status.index}].type" value="${item.type}" type ="hidden"/></td>
+						</c:forEach>
+						</table>
+						
+							<input type="submit" id="makeOrder" name="Proceed for Payment"
+								onclick="validateform()" value="Proceed for Payment"
 								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
-						</form>
+								<h2>${error}</h2>
+						</form:form>
 					</div>
 				</div>
 			</div>

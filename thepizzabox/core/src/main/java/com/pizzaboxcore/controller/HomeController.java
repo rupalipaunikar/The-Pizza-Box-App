@@ -4,11 +4,14 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,28 +24,35 @@ import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
 import com.pizzabox.common.request.ItemWrapper;
+import com.pizzaboxcore.constants.Constants;
 import com.pizzaboxcore.service.ItemService;
 import com.pizzaboxcore.service.OrderService;
-
-
+import com.pizzaboxcore.validator.ItemValidator;
+import com.pizzaboxcore.validator.OrderValidator;
+import com.pizzaboxcore.validator.UserValidator;
 
 /**
  * HomeController is the base controller taking care of User Login , Generating
  * the order based on User data and sending the Order to Payment Module
  * 
  * @author Roshni
- *
  */
 
 @Controller
 public class HomeController {
-
 
 	@Autowired
 	private ItemService itemService;
 
 	@Autowired
 	private OrderService orderService;
+
+	@Autowired
+	private ItemValidator itemValidator;
+
+	@Autowired
+	private UserValidator userValidator;
+
 
 	/**
 	 * This method takes care of the User login
@@ -76,10 +86,12 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/homepage", method = RequestMethod.GET)
 	public ModelAndView showHomePage() {
-		List<Item> itemTypeMap = (List<Item>) itemService.createInitialList();
+		List<Item> itemList = (List<Item>) itemService.createInitialList();
+		itemValidator.validateItemList(itemList);
+
 		ItemWrapper itemWrapper = new ItemWrapper();
-		itemWrapper.setItemList(itemTypeMap);
-		return new ModelAndView("homepage", "itemWrapper", itemWrapper);
+		itemWrapper.setItemList(itemList);
+		return new ModelAndView("userhomepage", "itemWrapper", itemWrapper);
 	}
 
 	/**
@@ -89,65 +101,31 @@ public class HomeController {
 	 *            This contains all the items(Pizza,Beverage,Sides)details
 	 *            selected by the user
 	 * @param request
-	 *            This is the Http request containing the complete request coming
-	 *            from /makeorder
+	 *            This is the Http request containing the complete request
+	 *            coming from /makeorder
 	 * @return ModelAndView
 	 */
 	@RequestMapping(value = "/makeOrder", method = RequestMethod.POST)
 	public String makeOrder(@ModelAttribute("itemWrapper") final ItemWrapper itemWrapper,
-			final HttpServletRequest request, Principal principalUserObject, Model model) {
+			final Model model,@RequestParam("itemCheckBox")final String[] itemCheckBox) {
+		
+		if (itemCheckBox == null) {
+			model.addAttribute("error", Constants.CHECKBOX_EMPTY);
+			return "homepage";
+		}
+		
+		itemValidator.validateItemWrapper(itemWrapper);
 
-		final String[] selectedCheckBox = request.getParameterValues("itemCheckBox");
 		List<Integer> checkBoxList = new ArrayList<Integer>();
-
-		for (int m = 0; m < selectedCheckBox.length; m++) {
-			checkBoxList.add(Integer.parseInt(selectedCheckBox[m]));
+		for (int m = 0; m < itemCheckBox.length; m++) {
+			checkBoxList.add(Integer.parseInt(itemCheckBox[m]));
 		}
-
-		final List<Item> itemList = itemWrapper.getItemList();
-		final List<Item> finalOrderList = new ArrayList<Item>();
-
-		Iterator<Item> iterator = itemList.iterator();
-		Iterator iteratorCheckBox = checkBoxList.iterator();
-
-		int i = 0, j = 0;
-		Double totalPrice = 0.0;
-		while (iterator.hasNext() && iteratorCheckBox.hasNext() && (i != checkBoxList.size())
-				&& (j != itemList.size())) {
-			System.out.println(itemList.get(j));
-
-			int itemId = itemList.get(j).getItemId();
-			int checkBoxId = checkBoxList.get(i);
-
-			if (itemId == checkBoxId) {
-				totalPrice = totalPrice + itemList.get(j).getPrice();
-				Item item = new Item();
-				item.setItemId(itemList.get(j).getItemId());
-				item.setName(itemList.get(j).getName());
-				item.setPrice(itemList.get(j).getPrice());
-				item.setQuantity(itemList.get(j).getQuantity());
-				item.setType(itemList.get(j).getType());
-				finalOrderList.add(item);
-				i++;
-				iteratorCheckBox.next();
-			}
-			iterator.next();
-			j++;
-
-		}
-
-		final User user = orderService.getUserDetails(principalUserObject);
-		Order order = orderService.generateOrder(finalOrderList, totalPrice, user);
+		final List<Item> finalItemList = orderService.calculateFinalOrderList(itemWrapper.getItemList(), checkBoxList);
+		
+		final Order order = orderService.generateOrder(finalItemList);
 		model.addAttribute("order",order);
-		model.addAttribute("finalOrderList",finalOrderList);
+		model.addAttribute("finalItemList",finalItemList);
 		return "paymentgateway";
-	}
-	
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	public String testForm(@ModelAttribute("order")Order order,@ModelAttribute("user") User user) {
-		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-		System.out.println(order.getTotalAmount());
-		return null;
 	}
 
 }

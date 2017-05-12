@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<user user_id="1" first_name="Roshni"  last_name="Swadia" 
+		address="Pune" contact_no="234"  username="Roshni"  password="Roshni" 
+		role="ROLE_GUEST"/>
+</dataset>

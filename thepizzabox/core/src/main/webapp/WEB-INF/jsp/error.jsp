@@ -4,7 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.Map"%>
 <%@ page import="java.util.HashMap"%>
-<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ page isErrorPage="true"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en" class="no-js">
 <head>
@@ -103,31 +104,17 @@
 			<div class="content-md container">
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
-						<form:form name='loginForm' action="makeOrder" method="post" modelAtrribute="itemWrapper">
-					<table>
-   						 <c:forEach items="${itemWrapper.itemList}" var="item" varStatus="status"> 
-   						
-							<tr>
-								<td>
-								<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="checkbox" name="itemCheckBox" value='<c:out value="${item.itemId}"/>' />
-													<c:out value="${item.name}" /></label>
-								</td>
-								
-								<td><input name="itemList[${status.index}].quantity" value="${item.quantity}" type ="text"/></td>
-								
-							</tr>
-							<td><input name="itemList[${status.index}].itemId" value="${item.itemId}" type ="hidden"/></td>
-								<td><input name="itemList[${status.index}].name" value="${item.name}" type ="hidden"/></td>
-								<td><input name="itemList[${status.index}].price" value="${item.price}" type ="hidden"/></td>
-								<td><input name="itemList[${status.index}].type" value="${item.type}" type ="hidden"/></td>
+						<h2>Application Error, please contact support.</h2>
+
+						<h3>Debug Information:</h3>
+
+						Requested URL= ${url}<br> <br> 
+						Exception= ${exception.errorMessage}<br> <br> 
+						<strong>Exception Stack Trace</strong><br>
+						<c:forEach items="${exception.stackTrace}" var="ste">
+							${ste}
 						</c:forEach>
-						</table>
-						
-							<input type="submit" id="makeOrder" name="Proceed for Payment"
-								onclick="validateform()" value="Proceed for Payment"
-								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 16px; margin: 4px 2px; cursor: pointer;" />
-						</form:form>
+
 					</div>
 				</div>
 			</div>

@@ -8,12 +8,14 @@ import com.pizzabox.common.model.Item;
 
 public class ItemWrapper {
 	
+	
 	private List<Item> itemList;
 	
 	public ItemWrapper() {
 		this.itemList = new ArrayList<Item>();
 	}
 
+	
 	public List<Item> getItemList() {
 		return itemList;
 	}

@@ -59,6 +59,26 @@ public class SubOrder implements Serializable {
 	@JoinTable(name = "suborders_items", joinColumns = @JoinColumn(name = "suborder_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
 	//uniqueConstraints=@UniqueConstraint(columnNames = { "suborder_id" ,"item_id"}))
 	private List<Item> items = new ArrayList<Item>();
+	
+
+	public SubOrder() {
+		super();
+	}
+
+	public SubOrder(Integer id, ItemType subOrderType, Integer quantity, Double amount) {
+		super();
+		this.id = id;
+		this.subOrderType = subOrderType;
+		this.quantity = quantity;
+		this.amount = amount;
+	}
+	
+	public SubOrder(ItemType subOrderType, Integer quantity, Double amount) {
+		super();
+		this.subOrderType = subOrderType;
+		this.quantity = quantity;
+		this.amount = amount;
+	}
 
 	public List<Item> getItems() {
 		return items;

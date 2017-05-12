@@ -129,6 +129,36 @@ public class Order implements Serializable {
 		this.updatedTimestamp = updatedTimestamp;
 	}
 
+	public Order(Integer id, PaymentType paymentType, Status status, List<SubOrder> subOrders, Double totalAmount,
+			User user, Timestamp createdTimestamp, Timestamp updatedTimestamp) {
+		super();
+		this.id = id;
+		this.paymentType = paymentType;
+		this.status = status;
+		this.subOrders = subOrders;
+		this.totalAmount = totalAmount;
+		this.user = user;
+		this.createdTimestamp = createdTimestamp;
+		this.updatedTimestamp = updatedTimestamp;
+	}
+	
+	public Order(PaymentType paymentType, Status status, List<SubOrder> subOrders, Double totalAmount,
+			User user, Timestamp createdTimestamp, Timestamp updatedTimestamp) {
+		super();
+		this.paymentType = paymentType;
+		this.status = status;
+		this.subOrders = subOrders;
+		this.totalAmount = totalAmount;
+		this.user = user;
+		this.createdTimestamp = createdTimestamp;
+		this.updatedTimestamp = updatedTimestamp;
+	}
+
+	public Order() {
+		super();
+	}
+
+	
 //	@Override
 //	public String toString() {
 //		return "Order [id=" + id + ", paymentType=" + paymentType + ", status=" + status + ", subOrders=" + subOrders
