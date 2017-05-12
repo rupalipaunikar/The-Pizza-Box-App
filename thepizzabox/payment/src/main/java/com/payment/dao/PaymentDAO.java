@@ -25,18 +25,15 @@ public interface PaymentDAO {
 	 * This API updates the balance for a card
 	 * 
 	 * @param cardDetails
-	 * @param balance
-	 * @return no of rows affected
 	 * @throws DAOException 
 	 */
-	void updateBalance(final CardDetails cardDetails, final Double balance) throws DAOException;
+	void updateBalance(final CardDetails cardDetails) throws DAOException;
 	
 	/**
 	 * This API updates the order status with the given status
 	 * 
 	 * @param orderId
 	 * @param status
-	 * @return no of rows affected
 	 * @throws DAOException 
 	 */
 	void updateOrderStatus(final Integer orderId, final Status status) throws DAOException;

@@ -16,9 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.pizzabox.common.constants.PaymentType;
 import com.pizzabox.common.constants.Status;
@@ -41,7 +38,6 @@ public class Order implements Serializable {
 	@Column(name="order_id")
 	private Integer id;
 	
-	@NotNull(message="Please select ")
 	@Column(name="payment_type")
 	private PaymentType paymentType;
 	

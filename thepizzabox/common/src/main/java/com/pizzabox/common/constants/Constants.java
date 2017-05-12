@@ -13,6 +13,7 @@ public class Constants {
 	
 	//common
 	public static final String EMPTY = "";
+	public static final String HYPHEN = " - ";
 	public static final String CHECKBOX_EMPTY = "No Items Selected. Please select the desired item to proceed further";
 	public static final String ITEMLIST_NULL = "Item List not fetched from database";
 	public static final String ITEMWRAPPER_NULL = "Item Wrapper or ItemList is not received in request";
@@ -24,7 +25,7 @@ public class Constants {
 	public static final String USER_DETAILS_NULL = "No User Information received from the database";
 	public static final String ORDER_GENERATED_NULL = "Order not generated for the user";
 	public static final String ORDERLIST_GENERATED_NULL = "Order list not generated for the user";
-	
+	public static final String REGEX_ONLY_DIGITS = "^([0-9][0-9]*)$";
 	public static final String STATUS = "status";
 	public static final String CARD_NUMBER = "cardNumber";
 	public static final String EXPIRY_DATE = "expiryDate";

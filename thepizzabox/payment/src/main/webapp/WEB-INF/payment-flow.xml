@@ -36,11 +36,7 @@
 				 error-channel="failedPaymentChannel"/>
 
 	<!-- Route to either cash or online channel -->
-	<int:router input-channel="paymentRequestChannel">
-		<bean id="paymentModeRouter" class="com.payment.router.PaymentModeRouter" />
-	</int:router>
-
-
+	<int:router input-channel="paymentRequestChannel" ref="paymentModeRouter"/>
 	
 	<!-- Cash channel flow  -->
 	<int-jdbc:outbound-channel-adapter channel="cashChannel" 
