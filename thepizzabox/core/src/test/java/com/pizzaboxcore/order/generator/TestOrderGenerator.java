@@ -1,4 +1,4 @@
-package com.pizzaboxcore.OrderGenerator;
+package com.pizzaboxcore.order.generator;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class TestOrderGenerator {
 
 	@Test
 	public void testGenerateSubOrderList() {
-		List<SubOrder> subOrderList = orderGenerator.generateSubOrderList(JUnitConstants.ITEM_LIST);
+		final List<SubOrder> subOrderList = orderGenerator.generateSubOrderList(JUnitConstants.ITEM_LIST);
 		Assert.assertEquals(new Double(200.00), subOrderList.get(0).getAmount());
 		Assert.assertEquals(new Double(100.00), subOrderList.get(1).getAmount());
 		Assert.assertEquals(new Double(500.00), subOrderList.get(2).getAmount());

@@ -59,9 +59,9 @@ public class TestOrderServiceImpl {
 
 		System.out.println(JUnitConstants.ORDER.getId());
 		
-		Authentication authentication = Mockito.mock(Authentication.class);
+		final Authentication authentication = Mockito.mock(Authentication.class);
 		Mockito.when(authentication.getName()).thenReturn(JUnitConstants.USERNAME);
-		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		final SecurityContext securityContext = Mockito.mock(SecurityContext.class);
 		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
 		SecurityContextHolder.setContext(securityContext);
 		
@@ -70,7 +70,7 @@ public class TestOrderServiceImpl {
 		when(orderGenerator.generateOrder(JUnitConstants.FINAL_ITEM_LIST, JUnitConstants.USER))
 				.thenReturn(JUnitConstants.ORDER);
 
-		Order order = orderService.generateOrder(JUnitConstants.FINAL_ITEM_LIST);
+		final Order order = orderService.generateOrder(JUnitConstants.FINAL_ITEM_LIST);
 
 		assertNotNull(order);
 		assertEquals(PaymentType.NOTSELECTED, order.getPaymentType());
@@ -82,7 +82,7 @@ public class TestOrderServiceImpl {
 	@Test
 	public void testCalculateFinalOrderList() {
 
-		List<Integer> checkBoxList = new ArrayList<Integer>();
+		final List<Integer> checkBoxList = new ArrayList<Integer>();
 		checkBoxList.add(2);
 		checkBoxList.add(3);
 
@@ -99,7 +99,7 @@ public class TestOrderServiceImpl {
 		
 		when(orderDAO.getUserDetails(JUnitConstants.USERNAME)).thenReturn(JUnitConstants.USER);
 		
-		User user = orderService.getUserDetails(JUnitConstants.USERNAME);
+		final User user = orderService.getUserDetails(JUnitConstants.USERNAME);
 		
 		Assert.assertNotNull(user);
 		Assert.assertEquals(JUnitConstants.USERNAME, user.getUsername());

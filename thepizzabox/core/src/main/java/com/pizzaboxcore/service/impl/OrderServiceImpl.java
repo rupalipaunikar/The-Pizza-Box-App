@@ -20,6 +20,8 @@ import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.SubOrder;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.custom.exception.DAOException;
+import com.pizzaboxcore.custom.exception.OrderCreationException;
 import com.pizzaboxcore.dao.OrderDAO;
 import com.pizzaboxcore.order.generator.OrderGenerator;
 import com.pizzaboxcore.service.OrderService;
@@ -54,17 +56,20 @@ public class OrderServiceImpl implements OrderService {
 	 * @return Order
 	 */
 	public Order generateOrder(final List<Item> finalItemList) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		final String username = auth.getName();
+		Order finalOrder = null;
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		final String username = authentication.getName();
 		LOG.info("Order Creation Started for the user" + username);
 
 		final User user = getUserDetails(username);
+		final Order raworder = orderGenerator.generateOrder(finalItemList, user);
 
-		final Order order = orderGenerator.generateOrder(finalItemList, user);
-		
-		Order finalOrder = orderDAO.generateOrder(order);
-
-		LOG.info("Order Created for the user " + order.getUser().getUsername());
+		try {
+			finalOrder = orderDAO.generateOrder(raworder);
+		} catch (DAOException exception) {
+			throw new OrderCreationException(exception);
+		}
+		LOG.info("Order Created for the user " + finalOrder.getUser().getUsername());
 		return finalOrder;
 	}
 
@@ -76,9 +81,13 @@ public class OrderServiceImpl implements OrderService {
 	 * @return User
 	 */
 	public User getUserDetails(final String username) {
-
+		User user = null;
 		LOG.info("Fetching Details for " + username + " from the database");
-		final User user = orderDAO.getUserDetails(username);
+		try{
+		user = orderDAO.getUserDetails(username);
+		}catch(DAOException exception){
+			LOG.info("");
+		}
 		return user;
 	}
 
@@ -95,36 +104,34 @@ public class OrderServiceImpl implements OrderService {
 
 		LOG.info("Started Creating Final Order List");
 		final List<Item> finalOrderList = new ArrayList<Item>();
-		Iterator<Item> iterator = itemList.iterator();
+		final Iterator<Item> iterator = itemList.iterator();
 		Iterator iteratorCheckBox = checkBoxList.iterator();
 
-		int i = 0, j = 0;
-		while (iterator.hasNext() && iteratorCheckBox.hasNext() && (i != checkBoxList.size())
-				&& (j != itemList.size())) {
-			System.out.println(itemList.get(j));
+		int checkBoxCounter = 0, itemListCounter = 0;
+		while (iterator.hasNext() && iteratorCheckBox.hasNext() && (checkBoxCounter != checkBoxList.size())
+				&& (itemListCounter != itemList.size())) {
+			System.out.println(itemList.get(itemListCounter));
 
-			int itemId = itemList.get(j).getItemId();
-			int checkBoxId = checkBoxList.get(i);
+			int itemId = itemList.get(itemListCounter).getItemId();
+			int checkBoxId = checkBoxList.get(checkBoxCounter);
 
 			if (itemId == checkBoxId) {
 				Item item = new Item();
-				item.setItemId(itemList.get(j).getItemId());
-				item.setName(itemList.get(j).getName());
-				item.setPrice(itemList.get(j).getPrice());
-				item.setQuantity(itemList.get(j).getQuantity());
-				item.setType(itemList.get(j).getType());
+				item.setItemId(itemList.get(itemListCounter).getItemId());
+				item.setName(itemList.get(itemListCounter).getName());
+				item.setPrice(itemList.get(itemListCounter).getPrice());
+				item.setQuantity(itemList.get(itemListCounter).getQuantity());
+				item.setType(itemList.get(itemListCounter).getType());
 				finalOrderList.add(item);
-				i++;
+				checkBoxCounter++;
 				iteratorCheckBox.next();
 			}
 			iterator.next();
-			j++;
+			itemListCounter++;
 
 		}
 		LOG.info("Final Order List Created");
 		return finalOrderList;
 	}
-
-	
 
 }

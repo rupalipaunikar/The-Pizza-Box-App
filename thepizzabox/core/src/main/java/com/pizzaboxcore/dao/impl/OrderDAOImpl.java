@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.custom.exception.DAOException;
 import com.pizzaboxcore.dao.OrderDAO;
 
 /**
@@ -29,30 +30,43 @@ public class OrderDAOImpl implements OrderDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public User getUserDetails(final String userName) {
+	public User getUserDetails(final String userName) throws DAOException {
 		LOG.info("Fetching of User Details is initiated.");
 
-		Query query = sessionFactory.openSession().createQuery(_GET_USER_DETAIL);
+		final Query query = sessionFactory.openSession().createQuery(_GET_USER_DETAIL);
 		query.setString("username", userName);
 		final User user = (User) query.uniqueResult();
+		
+		if(user==null||user.getUserId()==null){
+			String errorMessage = "Either user or its ID is null";
+			LOG.error(errorMessage);
+			throw new DAOException(errorMessage);
+		}
 
 		LOG.info("Fetching of User from database is completed.");
 		return user;
 	}
 	
-	public Order generateOrder(final Order order){
+	public Order generateOrder(final Order order) throws DAOException{
 		LOG.info("Creating Order in the database.");
 		
 		
 		final Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		int orderId = (int) session.save(order);
+		final int orderId = (int) session.save(order);
 		session.getTransaction().commit();
 		session.close();
 		
 		Query query = sessionFactory.openSession().createQuery(_GET_ORDER);
 		query.setInteger("id", orderId);
-		Order finalOrder = (Order) query.uniqueResult();
+		final Order finalOrder = (Order) query.uniqueResult();
+		
+		if(finalOrder==null||finalOrder.getId()==null){
+			String errorMessage = "Either order or its ID is null";
+			LOG.error(errorMessage);
+			throw new DAOException(errorMessage);
+		}
+		
 		LOG.info("Order Created Successfully");
 		return finalOrder;
 	}

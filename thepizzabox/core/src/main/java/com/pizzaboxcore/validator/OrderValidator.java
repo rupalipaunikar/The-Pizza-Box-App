@@ -17,7 +17,8 @@ public class OrderValidator {
 private static final Logger LOG = Logger.getLogger(OrderServiceImpl.class);
 	
 	public void validateGeneratedOrder(Order order){
-		if(order==null){
+		if(order==null || order.getId()==null){
+			
 			LOG.info(Constants.ORDER_GENERATED_NULL);
 			throw new CustomGenericException(Constants.ORDER_GENERATED_NULL);
 		}

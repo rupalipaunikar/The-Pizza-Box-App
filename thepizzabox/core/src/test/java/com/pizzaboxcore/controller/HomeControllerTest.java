@@ -37,9 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(locations = JUnitConstants.LOCATION_APP_CONTEXT)
 public class HomeControllerTest {
 
-	@Mock
-    private Model model;
-	
+
 	@Mock
 	private ItemService itemService;
 
