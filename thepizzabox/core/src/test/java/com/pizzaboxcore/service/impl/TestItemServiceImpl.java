@@ -29,9 +29,9 @@ public class TestItemServiceImpl {
 	
 	@Test
 	public void testCreateInitialItemDataMap(){
-		List<Item> map = itemService.createInitialList();
-		Assert.assertNotNull(map);
-		Assert.assertEquals(3, map.size());
+		List<Item> list = itemService.createInitialList();
+		Assert.assertNotNull(list);
+		Assert.assertEquals(9, list.size());
 	}
 	
 }

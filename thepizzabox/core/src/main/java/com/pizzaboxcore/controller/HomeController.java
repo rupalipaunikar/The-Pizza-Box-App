@@ -127,5 +127,4 @@ public class HomeController {
 		model.addAttribute("finalItemList",finalItemList);
 		return "paymentgateway";
 	}
-
 }

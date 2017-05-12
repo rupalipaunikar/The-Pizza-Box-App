@@ -261,6 +261,5 @@
 	<script src="js/components/wow.min.js" type="text/javascript"></script>
 	<script src="js/components/swiper.min.js" type="text/javascript"></script>
 	<script src="js/components/masonry.min.js" type="text/javascript"></script>
-
 </body>
 </html>

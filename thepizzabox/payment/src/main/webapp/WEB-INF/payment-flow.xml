@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans
-	xmlns:stream="http://www.springframework.org/schema/integration/stream"
+<beans xmlns:stream="http://www.springframework.org/schema/integration/stream"
 	xmlns:mail="http://www.springframework.org/schema/integration/mail"
 	xmlns:ws="http://www.springframework.org/schema/integration/ws"
-	xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:http="http://www.springframework.org/schema/integration/http"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:int-jdbc="http://www.springframework.org/schema/integration/jdbc"
 	xsi:schemaLocation="http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream-4.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/integration/jdbc http://www.springframework.org/schema/integration/jdbc/spring-integration-jdbc-3.0.xsd
 		http://www.springframework.org/schema/integration/mail http://www.springframework.org/schema/integration/mail/spring-integration-mail.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
 		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http-4.1.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd">
-
-	<int:channel id="testChannel"/>
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	
+	<import resource="payment-context.xml"/>
+	
+	<int:channel id="paymentRequestChannel" />
+	<int:channel id="paymentReplyChannel" /> 
+	<int:publish-subscribe-channel id="cashChannel"/>
+	<int:publish-subscribe-channel id="onlineChannel"/>
+	<int:channel id="jdbcUpdateChannel"/>
+	<int:channel id="failedPaymentChannel"/>
+
 	<!-- Entry point -->
-	<int:gateway id="paymentGateway" service-interface="com.payment.gateway.PaymentGateway" default-request-channel="testChannel" />
-	
-	<beans:bean id="tester" class="com.payment.gateway.Tester"/>
-	
-	<int:service-activator ref="tester" input-channel="testChannel"/>
+	<int:gateway id="paymentGateway" 
+				 service-interface="com.payment.gateway.PaymentGateway"
+				 default-request-channel="paymentRequestChannel" 
+				 default-reply-channel="paymentReplyChannel"
+				 error-channel="failedPaymentChannel"/>
 
-		
+	<!-- Route to either cash or online channel -->
+	<int:router input-channel="paymentRequestChannel">
+		<bean id="paymentModeRouter" class="com.payment.router.PaymentModeRouter" />
+	</int:router>
+
+
+	
+	<!-- Cash channel flow  -->
+	<int-jdbc:outbound-channel-adapter channel="cashChannel" 
+							   data-source="dataSource"
+							   query="update order_details set payment_type = :payload.order.paymentType.type, status = 2 where order_id = :payload.order.id"/>
+							   
+	<int:transformer input-channel="cashChannel" ref="invoiceCreator" output-channel="paymentReplyChannel"/>
+	
+	
+	<!-- Online channel flow  -->
+	<int-jdbc:outbound-channel-adapter channel="onlineChannel" 
+							   data-source="dataSource"
+							   query="update order_details set payment_type = :payload.order.paymentType.type where order_id = :payload.order.id"/>
+							   
+	<int:chain input-channel="onlineChannel" output-channel="paymentReplyChannel">
+		<int:service-activator ref="paymentProcessor"/>
+		<int:transformer ref="invoiceCreator"/>
+	</int:chain>
+	
+	<int:service-activator ref="failedPaymentHandler" input-channel="failedPaymentChannel" output-channel="paymentReplyChannel"/>
 	
 
-</beans:beans>
+</beans>
