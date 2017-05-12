@@ -18,5 +18,5 @@ public interface PaymentGateway {
 	 * @param order
 	 * @return invoice
 	 */
-	Invoice makePayment(PaymentDetails paymentDetails);
+	Invoice processPayment(PaymentDetails paymentDetails);
 }

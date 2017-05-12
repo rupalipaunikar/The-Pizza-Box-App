@@ -112,7 +112,7 @@ public class PaymentController {
 		String username = user.getUsername();
 		LOG.info("Initiating the payment flow for user[" + username + "]");
 		// call the payment-flow
-		Invoice invoice = paymentGateway.makePayment(paymentDetails);
+		Invoice invoice = paymentGateway.processPayment(paymentDetails);
 		LOG.info("Payment flow is complete for user[" + username + "]");
 		
 		model.addAttribute(Constants.INVOICE, invoice);

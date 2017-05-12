@@ -88,7 +88,7 @@ public class TestPaymentController {
 		Mockito.when(paymentValidator.validate(Mockito.any(Order.class), Mockito.any(User.class),
 											   Mockito.any(CardDetails.class))).thenReturn(Constants.NO_ERROR);
 		
-		Mockito.when(paymentGateway.makePayment(Mockito.any(PaymentDetails.class))).thenReturn(new Invoice());
+		Mockito.when(paymentGateway.processPayment(Mockito.any(PaymentDetails.class))).thenReturn(new Invoice());
 		
 		mockMvc.perform(post("/submit").flashAttr(Constants.ORDER, new Order())
 									   .flashAttr(Constants.USER, new User())
@@ -104,7 +104,7 @@ public class TestPaymentController {
 		Mockito.when(paymentValidator.validate(Mockito.any(Order.class), Mockito.any(User.class),
 											   Mockito.any(CardDetails.class))).thenReturn("some error");
 		
-		Mockito.when(paymentGateway.makePayment(Mockito.any(PaymentDetails.class))).thenReturn(new Invoice());
+		Mockito.when(paymentGateway.processPayment(Mockito.any(PaymentDetails.class))).thenReturn(new Invoice());
 		
 		mockMvc.perform(post("/submit").flashAttr(Constants.ORDER, new Order())
 									   .flashAttr(Constants.USER, new User())
