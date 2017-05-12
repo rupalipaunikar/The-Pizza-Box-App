@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 /**
  * 
@@ -95,7 +94,7 @@ public class HomeControllerTest {
 
 	public List<Integer> getCheckBoxList(String[] checkBoxSelected) {
 
-		List<Integer> checkBoxList = new ArrayList<Integer>();
+		final List<Integer> checkBoxList = new ArrayList<Integer>();
 		for (int m = 0; m < checkBoxSelected.length; m++) {
 			checkBoxList.add(Integer.parseInt(checkBoxSelected[m]));
 		}

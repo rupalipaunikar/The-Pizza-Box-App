@@ -63,8 +63,7 @@ public class HomeController {
 	public ModelAndView login(@RequestParam(value = "error", required = false) final String error,
 			@RequestParam(value = "logout", required = false) final String logout) {
 
-		System.out.println("In Login");
-		ModelAndView model = new ModelAndView();
+		final ModelAndView model = new ModelAndView();
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
 		}
@@ -86,10 +85,10 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/homepage", method = RequestMethod.GET)
 	public ModelAndView showHomePage() {
-		List<Item> itemList = (List<Item>) itemService.createInitialList();
+		final List<Item> itemList = (List<Item>) itemService.createInitialList();
 		itemValidator.validateItemList(itemList);
 
-		ItemWrapper itemWrapper = new ItemWrapper();
+		final ItemWrapper itemWrapper = new ItemWrapper();
 		itemWrapper.setItemList(itemList);
 		return new ModelAndView("userhomepage", "itemWrapper", itemWrapper);
 	}
@@ -116,7 +115,7 @@ public class HomeController {
 		
 		itemValidator.validateItemWrapper(itemWrapper);
 
-		List<Integer> checkBoxList = new ArrayList<Integer>();
+		final List<Integer> checkBoxList = new ArrayList<Integer>();
 		for (int m = 0; m < itemCheckBox.length; m++) {
 			checkBoxList.add(Integer.parseInt(itemCheckBox[m]));
 		}

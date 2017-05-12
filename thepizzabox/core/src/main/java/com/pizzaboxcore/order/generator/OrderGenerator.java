@@ -40,14 +40,14 @@ public class OrderGenerator {
 	 */
 	
 	public Order generateOrder(final List<Item> finalItemList,
-			User user) {
+			final User user) {
 		LOG.info("Order Creation Started by Order Generator");
 		
 
 		final Double totalAmount = calculateTotalPrice(finalItemList);
-		List<SubOrder> subOrderList = generateSubOrderList(finalItemList);
+		final List<SubOrder> subOrderList = generateSubOrderList(finalItemList);
 
-		Order order = new Order();
+		final Order order = new Order();
 
 		order.setCreatedTimestamp(new Timestamp(System.currentTimeMillis()));
 		order.setUser(user);
@@ -76,10 +76,10 @@ public class OrderGenerator {
 	public Double calculateTotalPrice(final List<Item> finalOrderList) {
 		Iterator iteratorCheckBox = finalOrderList.iterator();
 		Double totalPrice = 0.0;
-		int i = 0;
-		while (iteratorCheckBox.hasNext() && (i != finalOrderList.size())) {
-			totalPrice = totalPrice + finalOrderList.get(i).getPrice() * finalOrderList.get(i).getQuantity();
-			i++;
+		int counter = 0;
+		while (iteratorCheckBox.hasNext() && (counter != finalOrderList.size())) {
+			totalPrice = totalPrice + finalOrderList.get(counter).getPrice() * finalOrderList.get(counter).getQuantity();
+			counter++;
 			iteratorCheckBox.next();
 		}
 
@@ -98,15 +98,15 @@ public class OrderGenerator {
 	public List<SubOrder> generateSubOrderList(final List<Item> itemList) {
 		LOG.info("Creating Sub-order List");
 		final List<SubOrder> subOrderList = new ArrayList<SubOrder>();
-		Iterator<Item> iteratorItemList = itemList.iterator();
+		final Iterator<Item> iteratorItemList = itemList.iterator();
 		int itemListCounter = 0;
 		final SubOrder pizzaSubOrder = new SubOrder();
 		final SubOrder beverageSubOrder = new SubOrder();
 		final SubOrder sidesSubOrder = new SubOrder();
 
 		while (iteratorItemList.hasNext() && itemListCounter != itemList.size()) {
-			Item item = itemList.get(itemListCounter);
-			ItemType itemType = itemList.get(itemListCounter).getType();
+			final Item item = itemList.get(itemListCounter);
+			final ItemType itemType = itemList.get(itemListCounter).getType();
 
 			if (itemType.equals(ItemType.PIZZA)) {
 				generateSuborder(pizzaSubOrder, item);

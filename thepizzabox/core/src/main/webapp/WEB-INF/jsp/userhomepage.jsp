@@ -36,6 +36,8 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <title>Home Page</title>
 
+<script src="js/homepage.js" type="text/javascript"></script>
+
 </head>
 <body>
 	<!--========== HEADER ==========-->
@@ -110,11 +112,11 @@
 							<tr>
 								<td>
 								<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="checkbox" name="itemCheckBox" value='<c:out value="${item.itemId}"/>' />
+													<input type="checkbox"  id="itemCheckBox[${status.index}]" name="itemCheckBox" onclick="ShowHideDiv()" value='<c:out value="${item.itemId}"/>' />
 													<c:out value="${item.name}" /></label>
 								</td>
 								
-								<td><input name="itemList[${status.index}].quantity" value="${item.quantity}" type ="text"/></td>
+								<td><div id="qtyTextBox[${status.index}]" style="display: none"><input name="itemList[${status.index}].quantity" value="${item.quantity}" type ="text" placeholder="Enter Quantity"/></div></td>
 								
 							</tr>
 							<td><input name="itemList[${status.index}].itemId" value="${item.itemId}" type ="hidden"/></td>
