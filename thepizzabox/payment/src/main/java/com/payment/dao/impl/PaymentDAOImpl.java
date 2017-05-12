@@ -59,11 +59,11 @@ public class PaymentDAOImpl implements PaymentDAO {
 	}
 
 	@Override
-	public void updateBalance(final CardDetails cardDetails, final Double balance) throws DAOException {
+	public void updateBalance(final CardDetails cardDetails) throws DAOException {
 		String cardNumber = cardDetails.getCardNumber();
 		
 		Query query = sessionFactory.openSession().createQuery(_UPDATE_BALANCE+_WHERE_CARDNUMBER_EXPIRYDATE_CVV_USERID)
-				.setParameter(Constants.BALANCE, balance)
+				.setParameter(Constants.BALANCE, cardDetails.getBalance())
 				.setParameter(Constants.CARD_NUMBER, cardNumber)
 				.setParameter(Constants.EXPIRY_DATE, cardDetails.getExpiryDate())
 				.setParameter(Constants.CVV, cardDetails.getCvv())
@@ -77,7 +77,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 			throw new DAOException(errMsg);
 		}
 		
-		LOG.info("Successfully updated balance["+balance+"] for card["+cardNumber+"]");
+		LOG.info("Successfully updated balance["+cardDetails.getBalance()+"] for card["+cardNumber+"]");
 	}
 
 	@Override
