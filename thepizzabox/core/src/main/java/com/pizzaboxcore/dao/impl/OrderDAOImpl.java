@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.constants.Constants;
+import com.pizzaboxcore.custom.exception.DAOException;
 import com.pizzaboxcore.dao.OrderDAO;
 
 /**
@@ -27,18 +29,23 @@ public class OrderDAOImpl implements OrderDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public User getUserDetails(final String userName) {
+	public User getUserDetails(final String userName) throws DAOException {
 		LOG.info("Fetching of User Details is initiated.");
 
 		Query query = sessionFactory.openSession().createQuery(_GET_USER_DETAIL);
 		query.setString("username", userName);
 		final User user = (User) query.uniqueResult();
+		
+		if(user==null||user.getUserId()==null){
+			LOG.error(Constants.USER_OR_ID_NULL);
+			throw new DAOException(Constants.USER_OR_ID_NULL);
+		}
 
 		LOG.info("Fetching of User from database is completed.");
 		return user;
 	}
 	
-	public Order generateOrder(final Order order){
+	public Order generateOrder(final Order order) throws DAOException{
 		LOG.info("Creating Order in the database.");
 		
 		
@@ -51,6 +58,12 @@ public class OrderDAOImpl implements OrderDAO {
 		Query query = sessionFactory.openSession().createQuery(_GET_ORDER);
 		query.setInteger("id", orderId);
 		Order finalOrder = (Order) query.uniqueResult();
+		
+		if(order==null||order.getId()==null){
+			LOG.error(Constants.ORDER_OR_ORDERID_NULL);
+			throw new DAOException(Constants.ORDER_OR_ORDERID_NULL);
+		}
+		
 		LOG.info("Order Created Successfully");
 		return finalOrder;
 	}
