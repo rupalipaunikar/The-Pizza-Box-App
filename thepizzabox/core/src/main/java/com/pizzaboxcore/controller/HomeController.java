@@ -1,17 +1,10 @@
 package com.pizzaboxcore.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,14 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
-import com.pizzabox.common.model.User;
 import com.pizzabox.common.request.ItemWrapper;
 import com.pizzaboxcore.constants.Constants;
+import com.pizzaboxcore.custom.exception.NoItemFound;
+import com.pizzaboxcore.custom.exception.OrderGenerationException;
+import com.pizzaboxcore.custom.exception.UserNotFoundException;
 import com.pizzaboxcore.service.ItemService;
 import com.pizzaboxcore.service.OrderService;
-import com.pizzaboxcore.validator.ItemValidator;
-import com.pizzaboxcore.validator.OrderValidator;
-import com.pizzaboxcore.validator.UserValidator;
+import com.pizzaboxcore.validator.ValidationUtils;
 
 /**
  * HomeController is the base controller taking care of User Login , Generating
@@ -48,10 +41,7 @@ public class HomeController {
 	private OrderService orderService;
 
 	@Autowired
-	private ItemValidator itemValidator;
-
-	@Autowired
-	private UserValidator userValidator;
+	private ValidationUtils validationUtils;
 
 
 	/**
@@ -82,11 +72,12 @@ public class HomeController {
 	 * 
 	 * @return ModelAndView The Model contains all the items offered by the
 	 *         Pizza Box System
+	 * @throws NoItemFound 
 	 */
 	@RequestMapping(value = "/homepage", method = RequestMethod.GET)
-	public ModelAndView showHomePage() {
+	public ModelAndView showHomePage() throws NoItemFound {
 		final List<Item> itemList = (List<Item>) itemService.createInitialList();
-		itemValidator.validateItemList(itemList);
+		validationUtils.getItemValidator().validateItemList(itemList);
 
 		final ItemWrapper itemWrapper = new ItemWrapper();
 		itemWrapper.setItemList(itemList);
@@ -103,17 +94,20 @@ public class HomeController {
 	 *            This is the Http request containing the complete request
 	 *            coming from /makeorder
 	 * @return ModelAndView
+	 * @throws UserNotFoundException 
+	 * @throws OrderGenerationException 
+	 * @throws NoItemFound 
 	 */
 	@RequestMapping(value = "/makeOrder", method = RequestMethod.POST)
 	public String makeOrder(@ModelAttribute("itemWrapper") final ItemWrapper itemWrapper,
-			final Model model,@RequestParam("itemCheckBox")final String[] itemCheckBox) {
+			final Model model,@RequestParam("itemCheckBox")final String[] itemCheckBox) throws OrderGenerationException, UserNotFoundException, NoItemFound {
 		
 		if (itemCheckBox == null) {
 			model.addAttribute("error", Constants.CHECKBOX_EMPTY);
 			return "homepage";
 		}
 		
-		itemValidator.validateItemWrapper(itemWrapper);
+		validationUtils.getItemValidator().validateItemWrapper(itemWrapper);
 
 		final List<Integer> checkBoxList = new ArrayList<Integer>();
 		for (int m = 0; m < itemCheckBox.length; m++) {
