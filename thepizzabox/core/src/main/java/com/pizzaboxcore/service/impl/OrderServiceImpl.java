@@ -20,10 +20,12 @@ import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.SubOrder;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.custom.exception.DAOException;
+import com.pizzaboxcore.custom.exception.OrderGenerationException;
+import com.pizzaboxcore.custom.exception.UserNotFoundException;
 import com.pizzaboxcore.dao.OrderDAO;
 import com.pizzaboxcore.order.generator.OrderGenerator;
 import com.pizzaboxcore.service.OrderService;
-import com.pizzaboxcore.validator.UserValidator;
 
 /**
  * OrderServiceImpl contains the implementation of OrderService APIs
@@ -52,17 +54,23 @@ public class OrderServiceImpl implements OrderService {
 	 * @param totalPrice
 	 *            This is the total Price of the order
 	 * @return Order
+	 * @throws UserNotFoundException 
 	 */
-	public Order generateOrder(final List<Item> finalItemList) {
+	public Order generateOrder(final List<Item> finalItemList) throws OrderGenerationException, UserNotFoundException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		final String username = auth.getName();
+		Order finalOrder=null;
 		LOG.info("Order Creation Started for the user" + username);
 
 		final User user = getUserDetails(username);
 
 		final Order order = orderGenerator.generateOrder(finalItemList, user);
-		
-		Order finalOrder = orderDAO.generateOrder(order);
+		try{
+		finalOrder = orderDAO.generateOrder(order);
+		}catch(DAOException exception){
+			LOG.error("Could not generate order for user ["+user.getUsername()+"].");
+			throw new OrderGenerationException(exception);
+		}
 
 		LOG.info("Order Created for the user " + order.getUser().getUsername());
 		return finalOrder;
@@ -74,11 +82,18 @@ public class OrderServiceImpl implements OrderService {
 	 * @param user
 	 *            This Principal object contains the name of the logged in user
 	 * @return User
+	 * @throws UserNotFoundException 
 	 */
-	public User getUserDetails(final String username) {
+	public User getUserDetails(final String username) throws UserNotFoundException {
 
 		LOG.info("Fetching Details for " + username + " from the database");
-		final User user = orderDAO.getUserDetails(username);
+		User user;
+		try {
+			user = orderDAO.getUserDetails(username);
+		} catch (DAOException exception) {
+			LOG.error("No Details found for the user ["+username+"]");
+			throw new UserNotFoundException(exception);
+		}
 		return user;
 	}
 
