@@ -21,9 +21,9 @@ public class Constants {
 	public static final String REQUESTED_URL  = "url";
 	public static final String EXCEPTION  = "exception";
 	public static final String PRINCIPAL_OBJECT_NULL  = "Pricipal Object received from the request is null";
-	public static final String USER_DETAILS_NULL = "No User Information received from the database";
-	public static final String ORDER_GENERATED_NULL = "Order not generated for the user";
-	public static final String ORDERLIST_GENERATED_NULL = "Order list not generated for the user";
+	public static final String ORDER_OR_ORDERID_NULL = "Either the order or its id is null";
+	public static final String USER_OR_ID_NULL = "Either the user or its id is null";
+	
 	
 	
 }
