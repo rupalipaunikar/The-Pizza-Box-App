@@ -38,11 +38,13 @@ public class PaymentProcessor {
 	 * updating the order status and populating the result
 	 * 
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @return paymentDetails
+	 * 			PaymentDetails with payment status populated
 	 * @throws PaymentProcessException
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public PaymentDetails processPayment(PaymentDetails paymentDetails) throws PaymentProcessException {
+	public PaymentDetails processPayment(final PaymentDetails paymentDetails) throws PaymentProcessException {
 		Order order = null;
 		
 		try {
@@ -57,12 +59,12 @@ public class PaymentProcessor {
 			paymentDetails.getPaymentResult().setPaymentResultStatus(PaymentResultStatus.SUCCESS);
 		} 
 		catch (PaymentServiceException e) {
-			String errMsg = "Error occurred while processing payment for order ID["+order.getId()+"]";
+			final String errMsg = "Error occurred while processing payment for order ID["+order.getId()+"]";
 			LOG.error(errMsg);
 			throw new PaymentProcessException(errMsg, e);
 		}
 		catch(Exception e){
-			String errMsg = "Error occurred while processing payment for order ID["+order.getId()+"]";
+			final String errMsg = "Error occurred while processing payment for order ID["+order.getId()+"]";
 			LOG.error(errMsg);
 			paymentDetails.getPaymentResult().setErrorCode(ErrorCode.PAYMENT_PROCESS);
 			throw new PaymentProcessException(errMsg, e);

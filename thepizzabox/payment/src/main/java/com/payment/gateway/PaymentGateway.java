@@ -15,8 +15,10 @@ public interface PaymentGateway {
 	/**
 	 * This API initiates the payment flow 
 	 * 
-	 * @param order
+	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @return invoice
+	 * 			Invoice containing order or error details and the payment status
 	 */
 	Invoice processPayment(PaymentDetails paymentDetails);
 }

@@ -1,7 +1,5 @@
 package com.payment.dao.impl;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +11,8 @@ import com.payment.common.JUnitConstants;
 import com.payment.common.JUnitTestHelper;
 import com.payment.dao.PaymentDAO;
 import com.payment.exception.DAOException;
-import com.pizzabox.common.constants.PaymentType;
 import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.CardDetails;
-import com.pizzabox.common.model.Order;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,9 +21,6 @@ public class TestPaymentDAOImpl {
 
 	@Autowired
 	private PaymentDAO paymentDAO;
-	
-	@Autowired
-	private SessionFactory sessionFactory;
 	
 	@Test
 	public void testGetBalanceForCard() throws DAOException {
@@ -58,12 +51,6 @@ public class TestPaymentDAOImpl {
 	
 	@Test
 	public void updateOrderStatus() throws DAOException {
-		//Order order = new Order();
-		//order.setStatus(Status.SUBMITTED);
-		//order.setPaymentType(PaymentType.NOTSELECTED);
-		//Session session = sessionFactory.openSession();
-		//int orderId = (int) session.save(order);
-		
 		paymentDAO.updateOrderStatus(1, Status.PAID_CASH);
 	}
 	

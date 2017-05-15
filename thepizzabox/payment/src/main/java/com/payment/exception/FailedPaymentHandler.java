@@ -28,31 +28,32 @@ import com.pizzabox.common.model.Order;
 public class FailedPaymentHandler {
 
 	private static final Logger LOG = Logger.getLogger(FailedPaymentHandler.class);
-	
+
 	@Autowired
 	private PaymentService paymentService;
-	
+
 	/**
 	 * Handles error occurred during messaging
 	 * flow and sets transaction status to FAILED
 	 * 
-	 * @author rupalip
-	 * @throws PaymentServiceException 
-	 *
+	 * @param errorMessage
+	 * 			exception with failed message
+	 * @return invoice
+	 * 			Invoice with order and error details 
 	 */
-	public Invoice handleError(ErrorMessage errorMessage) {
-		MessageHandlingException exception = (MessageHandlingException) errorMessage.getPayload();
-		PaymentDetails paymentDetails = (PaymentDetails) exception.getFailedMessage().getPayload();
+	public Invoice handleError(final ErrorMessage errorMessage) {
+		final MessageHandlingException exception = (MessageHandlingException) errorMessage.getPayload();
+		final PaymentDetails paymentDetails = (PaymentDetails) exception.getFailedMessage().getPayload();
 		
-		Invoice invoice = createErrorInvoice(paymentDetails);
+		final Invoice invoice = createErrorInvoice(paymentDetails);
 		setTransactionStatus(invoice, paymentDetails.getPaymentResult().getErrorCode());
 		
-		Integer id = paymentDetails.getOrder().getId();
+		final Integer orderID = paymentDetails.getOrder().getId();
 		try {
-			paymentService.updateOrderStatus(id, Status.FAILED);
+			paymentService.updateOrderStatus(orderID, Status.FAILED);
 		} 
 		catch (PaymentServiceException e) {
-			LOG.error("Error occurred while updating order to FAILED status for order ID["+id+"]");
+			LOG.error("Error occurred while updating order to FAILED status for order ID["+orderID+"]");
 		}
 		
 		return invoice;
@@ -61,17 +62,17 @@ public class FailedPaymentHandler {
 	/**
 	 * Creates error invoice for error scenarios
 	 * 
-	 * @param invoice
-	 * @param order
-	 * @param cardDetails
-	 * @param user
+	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
+	 * @return invoice
+	 * 			Invoice to be populated with error details
 	 */
-	private Invoice createErrorInvoice(PaymentDetails paymentDetails){
-		Order order = paymentDetails.getOrder();
-		Invoice invoice = new Invoice();
+	private Invoice createErrorInvoice(final PaymentDetails paymentDetails){
+		final Order order = paymentDetails.getOrder();
+		final Invoice invoice = new Invoice();
 		
-		Random r = new Random(System.currentTimeMillis());
-		int id = ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+		final Random random = new Random(System.currentTimeMillis());
+		final int id = ((1 + random.nextInt(2)) * 10000 + random.nextInt(10000));
 
 		invoice.setId(Constants.INV + id);
 		invoice.setOrderId(order.getId());
@@ -83,13 +84,15 @@ public class FailedPaymentHandler {
 	}
 	
 	/**
-	 * Sets transaction status
+	 * Sets transaction status in invoice
 	 * 
 	 * @param invoice
+	 * 			Invoice to be populated with transaction status
 	 * @param errorCode
+	 * 			ErrorCode pertaining to the error occurred
 	 */
-	private void setTransactionStatus(Invoice invoice, ErrorCode errorCode){
-		String msg = PaymentResultStatus.FAILED.toString() + Constants.HYPHEN;
+	private void setTransactionStatus(final Invoice invoice, final ErrorCode errorCode){
+		final String msg = PaymentResultStatus.FAILED.toString() + Constants.HYPHEN;
 		
 		if(errorCode == null){
 			//setting error code for scenarios where exception was thrown from payment processor 

@@ -2,6 +2,12 @@ package com.payment.data;
 
 import com.payment.exception.ErrorCode;
 
+/**
+ * This class holds the result status for the payment
+ * 
+ * @author rupalip
+ *
+ */
 public class PaymentResult {
 
 	private PaymentResultStatus paymentResultStatus;
@@ -31,4 +37,8 @@ public class PaymentResult {
 		this.errorCode = errorCode;
 	}
 
+	@Override
+	public String toString() {
+		return "PaymentResult [paymentResultStatus=" + paymentResultStatus + ", errorCode=" + errorCode + "]";
+	}
 }
