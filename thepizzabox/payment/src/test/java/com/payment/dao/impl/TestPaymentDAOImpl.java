@@ -58,13 +58,13 @@ public class TestPaymentDAOImpl {
 	
 	@Test
 	public void updateOrderStatus() throws DAOException {
-		Order order = new Order();
-		order.setStatus(Status.SUBMITTED);
-		order.setPaymentType(PaymentType.NOTSELECTED);
-		Session session = sessionFactory.openSession();
-		int orderId = (int) session.save(order);
+		//Order order = new Order();
+		//order.setStatus(Status.SUBMITTED);
+		//order.setPaymentType(PaymentType.NOTSELECTED);
+		//Session session = sessionFactory.openSession();
+		//int orderId = (int) session.save(order);
 		
-		paymentDAO.updateOrderStatus(orderId, Status.PAID_CASH);
+		paymentDAO.updateOrderStatus(1, Status.PAID_CASH);
 	}
 	
 	@Test(expected=DAOException.class)

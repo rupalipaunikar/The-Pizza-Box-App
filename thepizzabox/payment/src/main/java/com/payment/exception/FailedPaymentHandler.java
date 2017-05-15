@@ -92,6 +92,8 @@ public class FailedPaymentHandler {
 		String msg = PaymentResultStatus.FAILED.toString() + Constants.HYPHEN;
 		
 		if(errorCode == null){
+			//setting error code for scenarios where exception was thrown from payment processor 
+			// itself and not from the service layer
 			invoice.setTransactionStatus(msg + ErrorCode.PAYMENT_PROCESS.getDescription());
 		}
 		else{

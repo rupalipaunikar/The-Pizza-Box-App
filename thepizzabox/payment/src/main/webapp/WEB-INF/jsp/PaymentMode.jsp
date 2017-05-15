@@ -151,7 +151,7 @@
 								<tr>
 									<td>
 									<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="radio"  name="paymentType" value="CASH" />
+													<input type="radio" id="cashPaymentType" name="paymentType" value="CASH" />
 													Cash On Delivery</label>
 									</td>
 								</tr>

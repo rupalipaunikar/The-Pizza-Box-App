@@ -7,6 +7,14 @@ public class PaymentResult {
 	private PaymentResultStatus paymentResultStatus;
 	private ErrorCode errorCode;
 
+	public PaymentResult() {}
+	
+	public PaymentResult(PaymentResultStatus paymentResultStatus, ErrorCode errorCode) {
+		super();
+		this.paymentResultStatus = paymentResultStatus;
+		this.errorCode = errorCode;
+	}
+
 	public PaymentResultStatus getPaymentResultStatus() {
 		return paymentResultStatus;
 	}
