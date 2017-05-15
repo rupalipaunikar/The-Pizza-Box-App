@@ -7,11 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pizzabox.common.constants.ItemType;
 import com.pizzabox.common.constants.PaymentType;
@@ -57,6 +60,7 @@ public class OrderServiceImpl implements OrderService {
 	 * @throws UserNotFoundException 
 	 */
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Order generateOrder(final List<Item> finalItemList) throws OrderGenerationException, UserNotFoundException {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		final String username = auth.getName();
@@ -87,6 +91,7 @@ public class OrderServiceImpl implements OrderService {
 	 * @throws UserNotFoundException 
 	 */
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public User getUserDetails(final String username) throws UserNotFoundException {
 
 		LOG.info("Fetching Details for " + username + " from the database");

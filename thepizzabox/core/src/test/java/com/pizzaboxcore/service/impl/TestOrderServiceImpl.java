@@ -21,12 +21,12 @@ import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.constants.JUnitConstants;
 import com.pizzaboxcore.custom.exception.DAOException;
 import com.pizzaboxcore.custom.exception.OrderGenerationException;
 import com.pizzaboxcore.custom.exception.UserNotFoundException;
 import com.pizzaboxcore.dao.OrderDAO;
 import com.pizzaboxcore.order.generator.OrderGenerator;
-import com.pizzabox.common.constants.JUnitConstants;
 import org.junit.Assert;
 import org.junit.Before;
 
@@ -111,5 +111,27 @@ public class TestOrderServiceImpl {
 		Assert.assertEquals(JUnitConstants.USER.getRole(), user.getRole());
 		Assert.assertEquals(JUnitConstants.USER.getContactNo(), user.getContactNo());
 		Assert.assertEquals(JUnitConstants.USER.getAddress(), user.getAddress());
+	}
+	
+	@Test(expected=OrderGenerationException.class)
+	public void testOrderGenerationException() throws Exception{
+		
+		final Authentication authentication = Mockito.mock(Authentication.class);
+		Mockito.when(authentication.getName()).thenReturn(JUnitConstants.USERNAME);
+		final SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		when(orderDAO.getUserDetails(JUnitConstants.USERNAME)).thenReturn(JUnitConstants.USER);
+		
+		Mockito.doThrow(DAOException.class).when(orderDAO).generateOrder(Mockito.any(Order.class));
+		orderService.generateOrder(JUnitConstants.FINAL_ITEM_LIST);
+	}
+	
+	@Test(expected=UserNotFoundException.class)
+	public void testUserNotFoundException() throws Exception{
+		Mockito.doThrow(DAOException.class).when(orderDAO).getUserDetails(JUnitConstants.INVALID_USERNAME);
+		
+		orderService.getUserDetails(JUnitConstants.INVALID_USERNAME);
 	}
 }

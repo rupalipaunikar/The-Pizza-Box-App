@@ -37,7 +37,31 @@
 <title>Home Page</title>
 
 <script src="js/homepage.js" type="text/javascript"></script>
-<script src="js/divisionitem.js" type="text/javascript"></script>
+<script src="js/validatecheckbox.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(function () {
+    $('.chk1').change(function () {
+        if ($(this).is(":checked")) {
+            $('#makeOrder').removeAttr('disabled');
+        }
+        else {
+            var isChecked = false;
+            $('.chk1').each(function () {
+                if ($(this).is(":checked")) {
+                    $('#makeOrder').removeAttr('disabled');
+                    isChecked = true;
+                }
+            });
+            if (!isChecked) {
+                $('#makeOrder').attr('disabled', 'disabled');
+            }
+        }
+
+
+    })
+});
+    </script>
 
 </head>
 <body>
@@ -107,7 +131,7 @@
 				<div class="row">
 					<div class="col-sm-4 sm-margin-b-50">
 						<form:form name='loginForm' action="makeOrder" method="post"
-							modelAtrribute="itemWrapper">
+							modelAtrribute="itemWrapper" onsubmit="return validateform()" >
 							<table>
 								<tr>
 									<td><h2>Pizza</h2><hr /></td>
@@ -119,7 +143,7 @@
 									<tr>
 										<td><label
 											style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-												<input type="checkbox" id="itemCheckBox[${status.index}]"
+												<input type="checkbox" id="itemCheckBox[${status.index}]" class="chk1"
 												name="itemCheckBox" onclick="ShowHideDiv()"
 												value='<c:out value="${item.itemId}"/>' /> <c:out
 													value="${item.name}" />
@@ -162,8 +186,8 @@
 							</table>
 								<hr/>
 							<input type="submit" id="makeOrder" name="Proceed for Payment"
-								onclick="validateform()" value="Proceed for Payment"
-								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 20px; margin: 4px 2px; cursor: pointer;" />
+								value="Proceed for Payment"
+								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 20px; margin: 4px 2px; cursor: pointer;" disabled="disabled"/>
 							<h2>${error}</h2>
 						</form:form>
 					</div>

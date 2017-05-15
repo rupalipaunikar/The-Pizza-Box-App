@@ -102,11 +102,6 @@ public class HomeController {
 	public String makeOrder(@ModelAttribute("itemWrapper") final ItemWrapper itemWrapper,
 			final Model model,@RequestParam("itemCheckBox")final String[] itemCheckBox) throws OrderGenerationException, UserNotFoundException, NoItemFound {
 		
-		if (itemCheckBox == null) {
-			model.addAttribute("error", Constants.CHECKBOX_EMPTY);
-			return "homepage";
-		}
-		
 		validationUtils.getItemValidator().validateItemWrapper(itemWrapper);
 
 		final List<Integer> checkBoxList = new ArrayList<Integer>();

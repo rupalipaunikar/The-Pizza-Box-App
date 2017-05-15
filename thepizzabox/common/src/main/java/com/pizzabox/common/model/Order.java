@@ -44,7 +44,7 @@ public class Order implements Serializable {
 	@Column(name="status")
 	private Status status;
 
-	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<SubOrder> subOrders = new ArrayList<SubOrder>(0);
 	
 	@Column(name="total_amount")
