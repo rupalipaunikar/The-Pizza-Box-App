@@ -10,9 +10,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pizzabox.common.constants.ItemType;
-import com.pizzabox.common.constants.JUnitConstants;
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.SubOrder;
+import com.pizzaboxcore.constants.JUnitConstants;
 import com.pizzaboxcore.order.generator.OrderGenerator;
 
 @RunWith(SpringJUnit4ClassRunner.class)  

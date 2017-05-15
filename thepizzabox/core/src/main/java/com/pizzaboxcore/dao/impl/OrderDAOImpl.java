@@ -48,24 +48,27 @@ public class OrderDAOImpl implements OrderDAO {
 	public Order generateOrder(final Order order) throws DAOException{
 		LOG.info("Creating Order in the database.");
 		
-		
 		final Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		final int orderId = (int) session.save(order);
-		session.getTransaction().commit();
-		session.close();
+		final Integer orderId = (Integer) session.save(order);
 		
-		Query query = sessionFactory.openSession().createQuery(_GET_ORDER);
+		Order finalOrder = getGeneratedOrder(orderId);
+		
+		LOG.info("Order Created Successfully");
+		return finalOrder;
+	}
+	
+	public Order getGeneratedOrder(Integer orderId) throws DAOException{
+		final Session session = sessionFactory.openSession();
+		Query query = session.createQuery(_GET_ORDER);
 		query.setInteger("id", orderId);
 
 		Order finalOrder = (Order) query.uniqueResult();
 		
-		if(order==null||order.getId()==null){
+		if(finalOrder==null||finalOrder.getId()==null){
 			LOG.error(Constants.ORDER_OR_ORDERID_NULL);
 			throw new DAOException(Constants.ORDER_OR_ORDERID_NULL);
 		}
 		
-		LOG.info("Order Created Successfully");
 		return finalOrder;
 	}
 }
