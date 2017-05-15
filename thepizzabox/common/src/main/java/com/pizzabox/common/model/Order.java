@@ -16,9 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.pizzabox.common.constants.PaymentType;
 import com.pizzabox.common.constants.Status;
@@ -41,14 +38,13 @@ public class Order implements Serializable {
 	@Column(name="order_id")
 	private Integer id;
 	
-	@NotNull(message="Please select ")
 	@Column(name="payment_type")
 	private PaymentType paymentType;
 	
 	@Column(name="status")
 	private Status status;
 
-	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<SubOrder> subOrders = new ArrayList<SubOrder>(0);
 	
 	@Column(name="total_amount")
@@ -134,6 +130,36 @@ public class Order implements Serializable {
 	public void setUpdatedTimestamp(Timestamp updatedTimestamp) {
 		this.updatedTimestamp = updatedTimestamp;
 	}
+
+	public Order(Integer id, PaymentType paymentType, Status status, List<SubOrder> subOrders, Double totalAmount,
+			User user, Timestamp createdTimestamp, Timestamp updatedTimestamp) {
+		super();
+		this.id = id;
+		this.paymentType = paymentType;
+		this.status = status;
+		this.subOrders = subOrders;
+		this.totalAmount = totalAmount;
+		this.user = user;
+		this.createdTimestamp = createdTimestamp;
+		this.updatedTimestamp = updatedTimestamp;
+	}
+	
+	public Order(PaymentType paymentType, Status status, List<SubOrder> subOrders, Double totalAmount,
+			User user, Timestamp createdTimestamp, Timestamp updatedTimestamp) {
+		super();
+		this.paymentType = paymentType;
+		this.status = status;
+		this.subOrders = subOrders;
+		this.totalAmount = totalAmount;
+		this.user = user;
+		this.createdTimestamp = createdTimestamp;
+		this.updatedTimestamp = updatedTimestamp;
+	}
+
+	public Order() {
+		super();
+	}
+
 
 	@Override
 	public String toString() {

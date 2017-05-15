@@ -49,6 +49,13 @@
      if (!formValid) alert("Please choose a payment mode!");
      return formValid;
  }
+ function ShowHideDiv(){
+		
+		var onlinePaymentType = document.getElementById("onlinePaymentType");
+		var showAllTextBox = document.getElementById("showAllTextBox");
+		showAllTextBox.style.display = onlinePaymentType.checked ? "block" : "none";
+	}
+
 </script>
 </head>
 <body>
@@ -144,38 +151,39 @@
 								<tr>
 									<td>
 									<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="radio" name="paymentType" value="CASH" />
+													<input type="radio" id="cashPaymentType" name="paymentType" value="CASH" />
 													Cash On Delivery</label>
 									</td>
 								</tr>
 								<tr>
 									<td>
 									<label style="font-size: 16px; font-weight: 500; font-family: Hind, sans-serif; color: #515769;">
-													<input type="radio" name="paymentType" value="ONLINE" />
+													<input type="radio" id="onlinePaymentType" name="paymentType" value="ONLINE" onclick="ShowHideDiv()" />
 													Online</label>
 									</td>
 								</tr>
 
 							</table>
-
+							<div id="showAllTextBox" style="display: none">
 							<table>
 								<tr>
-									<td>Enter your 16 digit card number :</td>
-       								<td><input type="text" name="cardNumber" value="${cardDetails.cardNumber}" /></td>
+									<td>Card number :</td>
+       								<td><input id="cardNumber" type="text" name="cardNumber" placeholder="16-digit Card Number" value="${cardDetails.cardNumber}" /></td>
 								</tr>
 								<tr>
 									<td>Expiry Date :</td>
-       								<td><input type="text" name="expiryDate" value="${cardDetails.expiryDate}" /></td>
+       								<td><input id="expiryDate" type="text" name="expiryDate" placeholder="Expiry Date" value="${cardDetails.expiryDate}" /></td>
 								</tr>
 								<tr>
 									<td>CVV :</td>
-        							<td><input type="password" name="cvv" value="${cardDetails.cvv}" /></td>
+        							<td><input id="cvv" type="password" name="cvv" placeholder="CVV" value="${cardDetails.cvv}" /></td>
 								</tr>
 								<tr>
 									<td>Total Amount :</td>
-        							<td><input type="text" name="totalAmount" value="${order.totalAmount}" /></td>
+        							<td><input id="totalAmount" type="text" name="totalAmount" value="${order.totalAmount}" /></td>
 								</tr>
 							</table>
+							</div>
 							<input type="submit" id="paymentMode" name="Choose payment mode"
 								onclick="validateform()" value="Continue"
 								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 14px; margin: 4px 2px; cursor: pointer;" />

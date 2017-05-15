@@ -117,7 +117,7 @@
 									<th>Price</th>
 									<th>Quantity</th>
 								</tr>
-								<c:forEach var="itemList" items="${finalOrderList}">
+								<c:forEach var="itemList" items="${finalItemList}">
 									<tr>
 										<td><c:out value="${itemList.name}" /></td>
 										<td><c:out value="${itemList.price}" /></td>
@@ -133,7 +133,9 @@
 							</table>
 
 							<input name="id"
-								value="<c:out value='${order.id}'/>" type="hidden" /> <input
+								value="<c:out value='${order.id}'/>" type="hidden" />
+							
+								 <input
 								name="status" value="<c:out value='${order.status}'/>"
 								type="hidden" /> <input name="paymentType"
 								value="<c:out value='${order.paymentType}'/>" type="hidden" />

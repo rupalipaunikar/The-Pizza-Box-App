@@ -42,7 +42,7 @@ public class PaymentProcessor {
 	 * @throws PaymentProcessException
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public PaymentDetails makePayment(PaymentDetails paymentDetails) throws PaymentProcessException {
+	public PaymentDetails processPayment(PaymentDetails paymentDetails) throws PaymentProcessException {
 		Order order = null;
 		
 		try {

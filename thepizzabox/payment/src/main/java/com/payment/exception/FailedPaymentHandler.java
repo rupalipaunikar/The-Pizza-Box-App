@@ -31,6 +31,7 @@ public class FailedPaymentHandler {
 	
 	@Autowired
 	private PaymentService paymentService;
+	
 	/**
 	 * Handles error occurred during messaging
 	 * flow and sets transaction status to FAILED
@@ -44,7 +45,7 @@ public class FailedPaymentHandler {
 		PaymentDetails paymentDetails = (PaymentDetails) exception.getFailedMessage().getPayload();
 		
 		Invoice invoice = createErrorInvoice(paymentDetails);
-		invoice.setTransactionStatus(PaymentResultStatus.FAILED.toString() + " - "+ paymentDetails.getPaymentResult().getErrorCode().getDescription());
+		setTransactionStatus(invoice, paymentDetails.getPaymentResult().getErrorCode());
 		
 		Integer id = paymentDetails.getOrder().getId();
 		try {
@@ -79,5 +80,24 @@ public class FailedPaymentHandler {
 		invoice.setPaymentType(order.getPaymentType());
 		invoice.setUsername(paymentDetails.getCardDetails().getUser().getUsername());
 		return invoice;
+	}
+	
+	/**
+	 * Sets transaction status
+	 * 
+	 * @param invoice
+	 * @param errorCode
+	 */
+	private void setTransactionStatus(Invoice invoice, ErrorCode errorCode){
+		String msg = PaymentResultStatus.FAILED.toString() + Constants.HYPHEN;
+		
+		if(errorCode == null){
+			//setting error code for scenarios where exception was thrown from payment processor 
+			// itself and not from the service layer
+			invoice.setTransactionStatus(msg + ErrorCode.PAYMENT_PROCESS.getDescription());
+		}
+		else{
+			invoice.setTransactionStatus(msg + errorCode.getDescription());
+		}
 	}
 }

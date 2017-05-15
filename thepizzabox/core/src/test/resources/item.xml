@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<item item_id="1" name="Deluxe Veggie" price="500.00" type="0"/>
+	<item item_id="2" name="Pasta" price="100.00" type="1"/>
+	<item item_id="3" name="Pepsi" price="200.00" type="2"/>
+</dataset>

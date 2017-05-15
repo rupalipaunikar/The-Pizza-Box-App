@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<suborder_details suborder_id="1" amount="500.00" quantity="1" type="0" order_id="1" />
+	<suborder_details suborder_id="2" amount="200.00" quantity="1" type="1" order_id="1" />
+	<suborder_details suborder_id="3" amount="100.00" quantity="1" type="2" order_id="1" />
+</dataset>

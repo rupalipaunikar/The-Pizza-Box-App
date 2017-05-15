@@ -80,7 +80,7 @@ public class PaymentController {
 	@RequestMapping(value = "/submit", method = RequestMethod.POST)
 	public String initatePaymentFlow(@ModelAttribute(Constants.ORDER) final Order order,
 			@ModelAttribute(Constants.USER) final User user,
-			@ModelAttribute(Constants.CARD_DETAILS) final CardDetails cardDetails, Model model)
+			@ModelAttribute(Constants.CARD_DETAILS) final CardDetails cardDetails, final Model model)
 			throws PaymentValidationException {
 
 		// validate
@@ -112,7 +112,7 @@ public class PaymentController {
 		String username = user.getUsername();
 		LOG.info("Initiating the payment flow for user[" + username + "]");
 		// call the payment-flow
-		Invoice invoice = paymentGateway.makePayment(paymentDetails);
+		Invoice invoice = paymentGateway.processPayment(paymentDetails);
 		LOG.info("Payment flow is complete for user[" + username + "]");
 		
 		model.addAttribute(Constants.INVOICE, invoice);
@@ -129,7 +129,7 @@ public class PaymentController {
 	 * @return error page
 	 */
 	@ExceptionHandler(PaymentValidationException.class)
-	public ModelAndView handlePaymentRequestException(HttpServletRequest request, Exception ex) {
+	public ModelAndView handlePaymentValidationException(HttpServletRequest request, Exception ex) {
 		LOG.error("Requested URL:- " + request.getRequestURL());
 		LOG.error("Exception Raised:- " + ex);
 

@@ -40,7 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		Double balance = getBalance(paymentDetails);
 		deductAmountFromBalance(balance, totalAmount, paymentDetails);
-		updateBalance(paymentDetails, balance);
+		updateBalance(paymentDetails);
 		
 		LOG.info("Payment execution is complete for order ID["+order.getId()+"]");
 	}
@@ -94,6 +94,7 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 		
 		balance -= totalAmount;
+		paymentDetails.getCardDetails().setBalance(balance);
 	}
 
 	/**
@@ -103,13 +104,13 @@ public class PaymentServiceImpl implements PaymentService {
 	 * @param balance
 	 * @throws PaymentServiceException
 	 */
-	private void updateBalance(PaymentDetails paymentDetails, Double balance) throws PaymentServiceException{
+	private void updateBalance(PaymentDetails paymentDetails) throws PaymentServiceException{
 		CardDetails cardDetails = paymentDetails.getCardDetails();
 		String cardNumber = cardDetails.getCardNumber();
 		
 		LOG.info("Updating balance for card["+cardNumber+"]");
 		try {
-			paymentDAO.updateBalance(cardDetails, balance);
+			paymentDAO.updateBalance(cardDetails);
 		} 
 		catch (DAOException e) {
 			setErrorCodeAndThrowException("Error occurred while updating balance for card["+cardNumber+"]", ErrorCode.BALANCE_UPDATE, e, paymentDetails);

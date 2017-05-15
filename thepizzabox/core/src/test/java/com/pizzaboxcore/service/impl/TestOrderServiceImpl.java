@@ -1,12 +1,17 @@
 package com.pizzaboxcore.service.impl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,72 +21,117 @@ import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
-import com.pizzaboxcore.service.OrderService;
-import com.pizzabox.common.constants.JUnitConstants;
+import com.pizzaboxcore.constants.JUnitConstants;
+import com.pizzaboxcore.custom.exception.DAOException;
+import com.pizzaboxcore.custom.exception.OrderGenerationException;
+import com.pizzaboxcore.custom.exception.UserNotFoundException;
+import com.pizzaboxcore.dao.OrderDAO;
+import com.pizzaboxcore.order.generator.OrderGenerator;
 import org.junit.Assert;
+import org.junit.Before;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
+
 /**
  * 
  * @author Roshni
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)  
-@ContextConfiguration(locations=JUnitConstants.LOCATION_APP_CONTEXT)  
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = JUnitConstants.LOCATION_APP_CONTEXT)
 public class TestOrderServiceImpl {
 
-	@Autowired
-	private OrderService orderService;
+	@Mock
+	private OrderDAO orderDAO;
+
+	@Mock
+	private OrderGenerator orderGenerator;
+
+	@InjectMocks
+	private OrderServiceImpl orderService;
+
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+	}
+
+	@Test
+	public void testGenerateOrder() throws Exception {
+
+		System.out.println(JUnitConstants.ORDER.getId());
+		
+		final Authentication authentication = Mockito.mock(Authentication.class);
+		Mockito.when(authentication.getName()).thenReturn(JUnitConstants.USERNAME);
+		final SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		when(orderDAO.generateOrder(JUnitConstants.ORDER)).thenReturn(JUnitConstants.ORDER);
+		when(orderDAO.getUserDetails(JUnitConstants.USERNAME)).thenReturn(JUnitConstants.USER);
+		when(orderGenerator.generateOrder(JUnitConstants.FINAL_ITEM_LIST, JUnitConstants.USER))
+				.thenReturn(JUnitConstants.ORDER);
+
+		final Order order = orderService.generateOrder(JUnitConstants.FINAL_ITEM_LIST);
+
+		assertNotNull(order);
+		assertEquals(PaymentType.NOTSELECTED, order.getPaymentType());
+		assertEquals(Status.SUBMITTED, order.getStatus());
+		assertEquals(JUnitConstants.USERNAME, order.getUser().getUsername());
+
+	}
+
+	@Test
+	public void testCalculateFinalOrderList() {
+
+		final List<Integer> checkBoxList = new ArrayList<Integer>();
+		checkBoxList.add(2);
+		checkBoxList.add(3);
+
+		final List<Item> finalOrderList = orderService.calculateFinalOrderList(JUnitConstants.ITEM_LIST, checkBoxList);
+		Assert.assertNotNull(finalOrderList);
+		Assert.assertSame(JUnitConstants.SELECTED_ITEM_NAME_ONE, finalOrderList.get(0).getName());
+		Assert.assertSame(ItemType.BEVERAGE, finalOrderList.get(0).getType());
+		Assert.assertSame(JUnitConstants.SELECTED_ITEM_NAME_TWO, finalOrderList.get(1).getName());
+		Assert.assertSame(ItemType.SIDES, finalOrderList.get(1).getType());
+	}
+
+	@Test
+	public void testGetUserDetails() throws Exception{
+		
+		when(orderDAO.getUserDetails(JUnitConstants.USERNAME)).thenReturn(JUnitConstants.USER);
+		
+		final User user = orderService.getUserDetails(JUnitConstants.USERNAME);
+		
+		Assert.assertNotNull(user);
+		Assert.assertEquals(JUnitConstants.USERNAME, user.getUsername());
+		Assert.assertEquals(JUnitConstants.USER.getFirstName(), user.getFirstName());
+		Assert.assertEquals(JUnitConstants.USER.getLastName(), user.getLastName());
+		Assert.assertEquals(JUnitConstants.USER.getRole(), user.getRole());
+		Assert.assertEquals(JUnitConstants.USER.getContactNo(), user.getContactNo());
+		Assert.assertEquals(JUnitConstants.USER.getAddress(), user.getAddress());
+	}
 	
-	@Test
-	public void testGenerateOrder() {
+	@Test(expected=OrderGenerationException.class)
+	public void testOrderGenerationException() throws Exception{
 		
-		User user = new User();
-		user.setAddress("Pune");
-		user.setContactNo("565757");
-		user.setFirstName("Roshni");
-		user.setLastName("Swadia");
-		user.setRole("ROLE_GUEST");
-		user.setUsername("Roshni");
-		user.setPassword("Roshni");
+		final Authentication authentication = Mockito.mock(Authentication.class);
+		Mockito.when(authentication.getName()).thenReturn(JUnitConstants.USERNAME);
+		final SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
 		
-		Item pizza = new Item();
-		pizza.setName("Deluxe Veggie");
-		pizza.setPrice(500.00);
-		pizza.setQuantity(1);
-		pizza.setType(ItemType.PIZZA);
+		when(orderDAO.getUserDetails(JUnitConstants.USERNAME)).thenReturn(JUnitConstants.USER);
 		
-		Item beverage = new Item();
-		pizza.setName("Pepsi");
-		pizza.setPrice(50.00);
-		pizza.setQuantity(1);
-		pizza.setType(ItemType.BEVERAGE);
-		
-		Item sides = new Item();
-		pizza.setName("Pasta");
-		pizza.setPrice(200.00);
-		pizza.setQuantity(1);
-		pizza.setType(ItemType.SIDES);
-		
-		List<Item> itemList = new ArrayList<Item>();
-		itemList.add(pizza);
-		itemList.add(beverage);
-		itemList.add(sides);
-		
-		Double totalPrice = 750.00;
-
-		Order order = orderService.generateOrder(itemList, totalPrice, user);
-		
-		Assert.assertNotNull(order);
-		Assert.assertEquals(PaymentType.NOTSELECTED,order.getPaymentType());
-		Assert.assertEquals( Status.SUBMITTED,order.getStatus());
-		Assert.assertEquals( "Roshni",order.getUser().getUsername());
-		Assert.assertEquals(3, order.getSubOrders().size());
-		
-		// TODO Auto-generated method stub
+		Mockito.doThrow(DAOException.class).when(orderDAO).generateOrder(Mockito.any(Order.class));
+		orderService.generateOrder(JUnitConstants.FINAL_ITEM_LIST);
 	}
-
-	@Test
-	public void getUserDetails() {
-		// TODO Auto-generated method stub
+	
+	@Test(expected=UserNotFoundException.class)
+	public void testUserNotFoundException() throws Exception{
+		Mockito.doThrow(DAOException.class).when(orderDAO).getUserDetails(JUnitConstants.INVALID_USERNAME);
+		
+		orderService.getUserDetails(JUnitConstants.INVALID_USERNAME);
 	}
-
 }

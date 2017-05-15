@@ -121,4 +121,24 @@ public class User {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", LastName=" + LastName + ", address=" + address
 				+ ", contactNo=" + contactNo + ", username=" + username + ", role=" + role + "]";
 	}
+
+	public User(Integer userId, String firstName, String lastName, String address, String contactNo, String username,
+			String password, String role) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		LastName = lastName;
+		this.address = address;
+		this.contactNo = contactNo;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
+
+	public User() {
+		super();
+	}
+	
+	
 }
+

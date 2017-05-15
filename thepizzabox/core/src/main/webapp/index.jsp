@@ -67,9 +67,9 @@
                             <ul class="navbar-nav navbar-nav-right">
                                 <!-- Home -->
                                 <li class="nav-item">
-                                    <a class="nav-item-child active" href="index.html">
+                                    <h3><a class="nav-item-child active" href="index.html">
                                         Home
-                                    </a>
+                                    </a></h3>
                                 </li>
                                 <!-- End Home -->
 
@@ -145,7 +145,7 @@
                         <!-- Work -->
                         <div class="work">
                             <div class="work-overlay">
-                                <img class="full-width img-responsive" src="img/595x240/02.jpg" alt="Portfolio Image">
+                                <img class="full-width img-responsive" src="img/595x240/pizza.jpg" alt="Portfolio Image">
                             </div>
                             <div class="work-content">
                                 <h3 class="color-white margin-b-5">Amazing Support</h3>

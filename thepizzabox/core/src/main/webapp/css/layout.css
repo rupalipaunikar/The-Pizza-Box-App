@@ -34,6 +34,8 @@ body {
   font-family: Hind, sans-serif;
 }
 
+
+
 p {
   font-size: 15px;
   font-weight: 400;
@@ -452,6 +454,7 @@ fieldset[disabled] .btn-theme {
   display: block;
 }
 
+
 .header .nav-item:last-child .nav-item-child {
   padding-right: 0;
 }
@@ -459,7 +462,7 @@ fieldset[disabled] .btn-theme {
 .header .nav-item-child {
   position: relative;
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   font-weight: 600;
   font-family: Hind, sans-serif;
   text-transform: uppercase;
