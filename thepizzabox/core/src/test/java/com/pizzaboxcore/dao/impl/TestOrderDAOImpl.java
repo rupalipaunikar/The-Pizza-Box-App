@@ -17,6 +17,7 @@ import com.pizzabox.common.constants.PaymentType;
 import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.custom.exception.DAOException;
 import com.pizzaboxcore.dao.OrderDAO;
 
 /**
@@ -34,7 +35,7 @@ public class TestOrderDAOImpl  {
 	 @Test
 	 @Transactional
 	 @Rollback(true)
-	 public void testGetUserDetails(){
+	 public void testGetUserDetails() throws DAOException{
 		 User user = orderDao.getUserDetails(JUnitConstants.USERNAME);
 		 Assert.assertNotNull(user);
 			Assert.assertEquals(JUnitConstants.USERNAME, user.getUsername());
@@ -48,7 +49,7 @@ public class TestOrderDAOImpl  {
 	 @Test
 	 @Transactional
 	 @Rollback(true)
-	 public void testGenerateOrder(){
+	 public void testGenerateOrder() throws DAOException{
 		 
 		 Order order = orderDao.generateOrder(JUnitConstants.GENERATE_ORDER);
 		 assertNotNull(order);

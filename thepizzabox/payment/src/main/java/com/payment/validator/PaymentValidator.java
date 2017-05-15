@@ -88,7 +88,7 @@ public class PaymentValidator {
 		validate(user);
 		PaymentType paymentType = order.getPaymentType();
 		
-		if(paymentType == null ||paymentType == PaymentType.NOTSELECTED){
+		if(paymentType == null || !(paymentType == PaymentType.CASH || paymentType == PaymentType.ONLINE)){
 			String errMsg = "Payment type has not been selected for order ID[" + order.getId() + "]";
 			LOG.error(errMsg);
 			throw new PaymentValidationException(errMsg);

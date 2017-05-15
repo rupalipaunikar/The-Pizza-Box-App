@@ -1,23 +1,18 @@
+
 package com.pizzaboxcore.custom.exception;
 
-public class UserNotFoundException extends RuntimeException{
+public class UserNotFoundException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	private String errorMessage;
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public UserNotFoundException(String errorMessage, Throwable exception) {
+		super(errorMessage,exception);
 	}
 
 	public UserNotFoundException(String errorMessage) {
-		this.errorMessage = errorMessage;
+		super(errorMessage);
 	}
 	
-	public UserNotFoundException(Throwable e ){
-		super(e);
+	public UserNotFoundException(Throwable exception) {
+		super(exception);
 	}
 }

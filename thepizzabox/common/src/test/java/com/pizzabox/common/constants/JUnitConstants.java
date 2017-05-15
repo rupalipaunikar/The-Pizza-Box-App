@@ -55,7 +55,7 @@ public class JUnitConstants {
 		}
 	};
 
-	public static final User USER = new User(1,"Roshni","Swadia","Pune","444","Roshni","Roshni","ROLE_GUEST");
+	public static final User USER = new User(1,"Roshni","Swadia","Pune","9876546756","Roshni","Roshni","ROLE_GUEST");
 
 	public static final Order ORDER = new Order(1, PaymentType.NOTSELECTED, Status.SUBMITTED, SUBORDER_LIST, TOTAL_PRICE,
 			USER, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()));

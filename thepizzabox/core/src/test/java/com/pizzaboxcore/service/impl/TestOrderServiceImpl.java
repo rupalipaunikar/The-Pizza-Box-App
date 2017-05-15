@@ -21,6 +21,9 @@ import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
+import com.pizzaboxcore.custom.exception.DAOException;
+import com.pizzaboxcore.custom.exception.OrderGenerationException;
+import com.pizzaboxcore.custom.exception.UserNotFoundException;
 import com.pizzaboxcore.dao.OrderDAO;
 import com.pizzaboxcore.order.generator.OrderGenerator;
 import com.pizzabox.common.constants.JUnitConstants;
@@ -55,7 +58,7 @@ public class TestOrderServiceImpl {
 	}
 
 	@Test
-	public void testGenerateOrder() {
+	public void testGenerateOrder() throws Exception {
 
 		System.out.println(JUnitConstants.ORDER.getId());
 		
@@ -95,7 +98,7 @@ public class TestOrderServiceImpl {
 	}
 
 	@Test
-	public void testGetUserDetails(){
+	public void testGetUserDetails() throws Exception{
 		
 		when(orderDAO.getUserDetails(JUnitConstants.USERNAME)).thenReturn(JUnitConstants.USER);
 		

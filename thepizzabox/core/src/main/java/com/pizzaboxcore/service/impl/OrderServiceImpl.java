@@ -21,11 +21,11 @@ import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.SubOrder;
 import com.pizzabox.common.model.User;
 import com.pizzaboxcore.custom.exception.DAOException;
-import com.pizzaboxcore.custom.exception.OrderCreationException;
+import com.pizzaboxcore.custom.exception.OrderGenerationException;
+import com.pizzaboxcore.custom.exception.UserNotFoundException;
 import com.pizzaboxcore.dao.OrderDAO;
 import com.pizzaboxcore.order.generator.OrderGenerator;
 import com.pizzaboxcore.service.OrderService;
-import com.pizzaboxcore.validator.UserValidator;
 
 /**
  * OrderServiceImpl contains the implementation of OrderService APIs
@@ -54,22 +54,27 @@ public class OrderServiceImpl implements OrderService {
 	 * @param totalPrice
 	 *            This is the total Price of the order
 	 * @return Order
+	 * @throws UserNotFoundException 
 	 */
-	public Order generateOrder(final List<Item> finalItemList) {
-		Order finalOrder = null;
-		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		final String username = authentication.getName();
+
+	public Order generateOrder(final List<Item> finalItemList) throws OrderGenerationException, UserNotFoundException {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String username = auth.getName();
+		Order finalOrder=null;
 		LOG.info("Order Creation Started for the user" + username);
 
 		final User user = getUserDetails(username);
 		final Order raworder = orderGenerator.generateOrder(finalItemList, user);
 
-		try {
-			finalOrder = orderDAO.generateOrder(raworder);
-		} catch (DAOException exception) {
-			throw new OrderCreationException(exception);
+		final Order order = orderGenerator.generateOrder(finalItemList, user);
+		try{
+		finalOrder = orderDAO.generateOrder(order);
+		}catch(DAOException exception){
+			LOG.error("Could not generate order for user ["+user.getUsername()+"].");
+			throw new OrderGenerationException(exception);
 		}
-		LOG.info("Order Created for the user " + finalOrder.getUser().getUsername());
+
+		LOG.info("Order Created for the user " + order.getUser().getUsername());
 		return finalOrder;
 	}
 
@@ -79,14 +84,18 @@ public class OrderServiceImpl implements OrderService {
 	 * @param user
 	 *            This Principal object contains the name of the logged in user
 	 * @return User
+	 * @throws UserNotFoundException 
 	 */
-	public User getUserDetails(final String username) {
-		User user = null;
+
+	public User getUserDetails(final String username) throws UserNotFoundException {
+
 		LOG.info("Fetching Details for " + username + " from the database");
-		try{
-		user = orderDAO.getUserDetails(username);
-		}catch(DAOException exception){
-			LOG.info("");
+		User user;
+		try {
+			user = orderDAO.getUserDetails(username);
+		} catch (DAOException exception) {
+			LOG.error("No Details found for the user ["+username+"]");
+			throw new UserNotFoundException(exception);
 		}
 		return user;
 	}

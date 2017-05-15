@@ -16,12 +16,14 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
+import com.pizzabox.common.constants.Constants;
+import com.pizzabox.common.constants.ValidationErrorMessage;
+
 @Entity
 @Table(name = "card_details")
 public class CardDetails implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	
 	@OneToOne
 	@Id
@@ -40,9 +42,19 @@ public class CardDetails implements Serializable {
 	@Column(name = "balance")
 	private Double balance;
 	
-	@NotBlank(message="Please enter your card number")
-	@Size(min=16, max=16, message="Please enter 16 digit card number")
-	@Pattern(regexp="^([0-9][0-9]*)$", message="Card number cannot contain alphabets")
+	public CardDetails() {}
+	
+	public CardDetails(User user, String cardNumber, String expiryDate, Integer cvv) {
+		super();
+		this.user = user;
+		this.cardNumber = cardNumber;
+		this.expiryDate = expiryDate;
+		this.cvv = cvv;
+	}
+
+	@NotBlank(message=ValidationErrorMessage.CARD_NUMBER_BLANK)
+	@Size(min=16, max=16, message=ValidationErrorMessage.CARD_NUMBER_16_DIGIT)
+	@Pattern(regexp=Constants.REGEX_ONLY_DIGITS, message=ValidationErrorMessage.CARD_NUMBER_CANNOT_HAVE_ALPHABETS)
 	public String getCardNumber() {
 		return cardNumber;
 	}
@@ -51,8 +63,8 @@ public class CardDetails implements Serializable {
 		this.cardNumber = cardNumber;
 	}
 	
-	@NotBlank(message="Please enter expiry date of your card")
-	@Size(min=5, max=5, message="Expiry date is invalid")
+	@NotBlank(message=ValidationErrorMessage.EXPIRY_DATE_BLANK)
+	@Size(min=5, max=5, message=ValidationErrorMessage.EXPIRY_DATE_INVALID)
 	public String getExpiryDate() {
 		return expiryDate;
 	}
@@ -61,7 +73,7 @@ public class CardDetails implements Serializable {
 		this.expiryDate = expiryDate;
 	}
 
-	@NotNull(message="Please enter CVV number")
+	@NotNull(message=ValidationErrorMessage.CVV_BLANK)
 	@NumberFormat(style=Style.NUMBER)
 	public Integer getCvv() {
 		return cvv;

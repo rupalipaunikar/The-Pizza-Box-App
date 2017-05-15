@@ -87,6 +87,8 @@ public class InvoiceCreator {
 		PaymentResultStatus paymentResultStatus = paymentDetails.getPaymentResult().getPaymentResultStatus();
 		
 		// setting transaction status for cash payment mode
+		// paymentResultStatus will be null for CASH type payment as we do
+		// not carry out any payment processing
 		if (paymentResultStatus == null && paymentDetails.getOrder().getPaymentType() == PaymentType.CASH) {
 			invoice.setTransactionStatus(PaymentResultStatus.SUCCESS.toString());
 		}
