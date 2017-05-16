@@ -44,17 +44,20 @@ $(function () {
     $('.chk1').change(function () {
         if ($(this).is(":checked")) {
             $('#makeOrder').removeAttr('disabled');
+            $('#makeOrder').css('opacity',1);
         }
         else {
             var isChecked = false;
             $('.chk1').each(function () {
                 if ($(this).is(":checked")) {
                     $('#makeOrder').removeAttr('disabled');
+                    $('#makeOrder').css('opacity',1);
                     isChecked = true;
                 }
             });
             if (!isChecked) {
                 $('#makeOrder').attr('disabled', 'disabled');
+                $('#makeOrder').css('opacity',0.5);
             }
         }
 
@@ -187,7 +190,7 @@ $(function () {
 								<hr/>
 							<input type="submit" id="makeOrder" name="Proceed for Payment"
 								value="Proceed for Payment"
-								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 20px; margin: 4px 2px; cursor: pointer;" disabled="disabled"/>
+								style="box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19); font-size: 20px; margin: 4px 2px; cursor: pointer; opacity:0.5" disabled="disabled"/>
 							<h2>${error}</h2>
 						</form:form>
 					</div>
