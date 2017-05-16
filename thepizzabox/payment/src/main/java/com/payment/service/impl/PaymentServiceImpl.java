@@ -30,24 +30,40 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private PaymentDAO paymentDAO;
 
+	/**
+	 * This API carries out the actual processing of the payment
+	 *  
+	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
+	 * @throws PaymentServiceException 
+	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
-	public void executePayment(PaymentDetails paymentDetails) throws PaymentServiceException {
-		Order order = paymentDetails.getOrder();
-		Double totalAmount = order.getTotalAmount();
+	public void executePayment(final PaymentDetails paymentDetails) throws PaymentServiceException {
+		final Order order = paymentDetails.getOrder();
+		final Double totalAmount = order.getTotalAmount();
 		
 		LOG.info("Initiating payment execution for order ID["+order.getId()+"]");
 		
-		Double balance = getBalance(paymentDetails);
+		final Double balance = getBalance(paymentDetails);
 		deductAmountFromBalance(balance, totalAmount, paymentDetails);
 		updateBalance(paymentDetails);
 		
 		LOG.info("Payment execution is complete for order ID["+order.getId()+"]");
 	}
 
+	/**
+	 * This API updates the order status with the given status parameter
+	 * 
+	 * @param orderId
+	 * 			ID of the order to be updated
+	 * @param status
+	 * 			Order status to update with
+	 * @throws PaymentServiceException 
+	 */
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
-	public void updateOrderStatus(Integer orderId, Status status) throws PaymentServiceException {
+	public void updateOrderStatus(final Integer orderId, final Status status) throws PaymentServiceException {
 		LOG.info("Updating order status to "+status.getStatus()+" for order ID["+orderId+"]");
 		
 		try {
@@ -63,12 +79,14 @@ public class PaymentServiceImpl implements PaymentService {
 	 * Gets the balance for a card from the database
 	 * 
 	 * @param paymentDetails
-	 * @return
+	 * 			PaymentDetails containing order, user and card details
+	 * @return balance
+	 * 			Balance in the card
 	 * @throws PaymentServiceException
 	 */
-	private Double getBalance(PaymentDetails paymentDetails) throws PaymentServiceException{
+	private Double getBalance(final PaymentDetails paymentDetails) throws PaymentServiceException{
 		Double balance = null;
-		CardDetails cardDetails = paymentDetails.getCardDetails();
+		final CardDetails cardDetails = paymentDetails.getCardDetails();
 		
 		try {
 			balance = paymentDAO.getBalanceForCard(cardDetails);
@@ -79,15 +97,18 @@ public class PaymentServiceImpl implements PaymentService {
 		return balance;
 	}
 	
-	/**\
+	/**
 	 * Deducts the total amount from the balance
 	 * 
 	 * @param balance
+	 * 			Balance to be updated after total amount deduction
 	 * @param totalAmount
+	 * 			Total amount of the order
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @throws PaymentServiceException
 	 */
-	private void deductAmountFromBalance(Double balance, Double totalAmount, PaymentDetails paymentDetails) throws PaymentServiceException{
+	private void deductAmountFromBalance(Double balance, final Double totalAmount, final PaymentDetails paymentDetails) throws PaymentServiceException{
 		if (balance == null || balance < totalAmount) {
 			setErrorCodeAndThrowException("Insufficient balance in card["+paymentDetails.getCardDetails().getCardNumber()+"]", 
 						ErrorCode.INSUFFICIENT_BALANCE, paymentDetails);
@@ -101,12 +122,14 @@ public class PaymentServiceImpl implements PaymentService {
 	 * Updates the updated balance in the database
 	 * 
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @param balance
+	 * 			Balance to be updated after total amount deduction
 	 * @throws PaymentServiceException
 	 */
-	private void updateBalance(PaymentDetails paymentDetails) throws PaymentServiceException{
-		CardDetails cardDetails = paymentDetails.getCardDetails();
-		String cardNumber = cardDetails.getCardNumber();
+	private void updateBalance(final PaymentDetails paymentDetails) throws PaymentServiceException{
+		final CardDetails cardDetails = paymentDetails.getCardDetails();
+		final String cardNumber = cardDetails.getCardNumber();
 		
 		LOG.info("Updating balance for card["+cardNumber+"]");
 		try {
@@ -122,10 +145,14 @@ public class PaymentServiceImpl implements PaymentService {
 	 * Sets error code in payment result and throws exception
 	 * 
 	 * @param errMsg
+	 * 			Error message to be logged and thrown
+	 * @param errorCode
+	 * 			Error code for the message
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @throws PaymentServiceException
 	 */
-	private void setErrorCodeAndThrowException(String errMsg, ErrorCode errorCode, PaymentDetails paymentDetails) throws PaymentServiceException{
+	private void setErrorCodeAndThrowException(final String errMsg, final ErrorCode errorCode, final PaymentDetails paymentDetails) throws PaymentServiceException{
 		LOG.error(errMsg);
 		paymentDetails.getPaymentResult().setErrorCode(errorCode);
 		throw new PaymentServiceException(errMsg);
@@ -135,10 +162,16 @@ public class PaymentServiceImpl implements PaymentService {
 	 * Sets error code in payment result and throws exception
 	 * 
 	 * @param errMsg
+	 * 			Error message to be logged and thrown
+	 * @param errorCode
+	 * 			Error code for the message
+	 * @param e
+	 * 			Exception object 
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @throws PaymentServiceException
 	 */
-	private void setErrorCodeAndThrowException(String errMsg, ErrorCode errorCode, Throwable e, PaymentDetails paymentDetails) throws PaymentServiceException{
+	private void setErrorCodeAndThrowException(final String errMsg, final ErrorCode errorCode, final Throwable e, final PaymentDetails paymentDetails) throws PaymentServiceException{
 		LOG.error(errMsg);
 		paymentDetails.getPaymentResult().setErrorCode(errorCode);
 		throw new PaymentServiceException(errorCode.getDescription(), e);

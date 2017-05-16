@@ -3,7 +3,6 @@ package com.pizzaboxcore.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pizzabox.common.model.Item;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.request.ItemWrapper;
-import com.pizzaboxcore.constants.Constants;
 import com.pizzaboxcore.custom.exception.NoItemFound;
 import com.pizzaboxcore.custom.exception.OrderGenerationException;
 import com.pizzaboxcore.custom.exception.UserNotFoundException;

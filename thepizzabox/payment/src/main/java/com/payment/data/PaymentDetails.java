@@ -49,4 +49,9 @@ public class PaymentDetails {
 		this.paymentResult = paymentResult;
 	}
 
+	@Override
+	public String toString() {
+		return "PaymentDetails [cardDetails=" + cardDetails + ", order=" + order + ", paymentResult=" + paymentResult
+				+ "]";
+	}
 }

@@ -31,10 +31,12 @@ public class InvoiceCreator {
 	 * This method creates invoice with payment details
 	 * 
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @return invoice
+	 * 			Invoice with order details and payment status
 	 * @throws PaymentProcessException
 	 */
-	public Invoice create(PaymentDetails paymentDetails) throws PaymentProcessException {
+	public Invoice create(final PaymentDetails paymentDetails) throws PaymentProcessException {
 
 		if (paymentDetails == null || paymentDetails.getOrder() == null) {
 			String errMsg = "Cannot create invoice as payment or order details are not available";
@@ -42,7 +44,7 @@ public class InvoiceCreator {
 			throw new PaymentProcessException(errMsg);
 		}
 
-		Invoice invoice = createInvoice(paymentDetails);
+		final Invoice invoice = createInvoice(paymentDetails);
 		LOG.info("Invoice created - " + invoice);
 		return invoice;
 	}
@@ -51,19 +53,21 @@ public class InvoiceCreator {
 	 * This method creates invoice with payment details
 	 * 
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @return invoice
+	 * 			Invoice with order details and payment status
 	 */
-	private Invoice createInvoice(PaymentDetails paymentDetails) {
-		Order order = paymentDetails.getOrder();
-		CardDetails cardDetails = paymentDetails.getCardDetails();
+	private Invoice createInvoice(final PaymentDetails paymentDetails) {
+		final Order order = paymentDetails.getOrder();
+		final CardDetails cardDetails = paymentDetails.getCardDetails();
 		
-		Invoice invoice = new Invoice();
+		final Invoice invoice = new Invoice();
 
 		LOG.info("Creating invoice for order ID[" + order.getId() + "] and user[" + cardDetails.getUser().getUsername()
 				+ "]");
 
-		Random r = new Random(System.currentTimeMillis());
-		int id = ((1 + r.nextInt(2)) * 10000 + r.nextInt(10000));
+		final Random random = new Random(System.currentTimeMillis());
+		final int id = ((1 + random.nextInt(2)) * 10000 + random.nextInt(10000));
 
 		invoice.setId(Constants.INV + id);
 		invoice.setOrderId(order.getId());
@@ -79,12 +83,17 @@ public class InvoiceCreator {
 
 	/**
 	 * This method sets transaction status in the invoice
+	 * If payment type is cash, transaction status is success
+	 * For online payment type the paymentResultStatus is populated by the
+	 * PaymentProcessor
 	 * 
 	 * @param invoice
+	 * 			Invoice with order details and payment status
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 */
-	private void setTransactionStatus(Invoice invoice, PaymentDetails paymentDetails) {
-		PaymentResultStatus paymentResultStatus = paymentDetails.getPaymentResult().getPaymentResultStatus();
+	private void setTransactionStatus(final Invoice invoice, final PaymentDetails paymentDetails) {
+		final PaymentResultStatus paymentResultStatus = paymentDetails.getPaymentResult().getPaymentResultStatus();
 		
 		// setting transaction status for cash payment mode
 		// paymentResultStatus will be null for CASH type payment as we do

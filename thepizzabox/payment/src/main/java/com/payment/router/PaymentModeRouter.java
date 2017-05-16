@@ -24,17 +24,19 @@ public class PaymentModeRouter {
 	 * Routes order based on their payment type
 	 * 
 	 * @param order
+	 * 			Order being processed
 	 * @return channel
+	 * 			Destination channel selected on the basis of payment type
 	 * @throws PaymentProcessException 
 	 */
-	public String route(PaymentDetails paymentDetails) throws PaymentProcessException{
-		PaymentType paymentType = paymentDetails.getOrder().getPaymentType();
-		Integer id = paymentDetails.getOrder().getId();
+	public String route(final PaymentDetails paymentDetails) throws PaymentProcessException{
+		final PaymentType paymentType = paymentDetails.getOrder().getPaymentType();
+		final Integer id = paymentDetails.getOrder().getId();
 		
 		LOG.info("Validating payment type for order ID["+id+"]");
 		validate(paymentType);
 		
-		String destinationChannel = ((paymentType == PaymentType.CASH)? Constants.CASH_CHANNEL : Constants.ONLINE_CHANNEL);
+		final String destinationChannel = ((paymentType == PaymentType.CASH)? Constants.CASH_CHANNEL : Constants.ONLINE_CHANNEL);
 		
 		LOG.info("Routing order ID["+id+"] to ["+destinationChannel+"] channel");
 		return destinationChannel;
@@ -44,17 +46,18 @@ public class PaymentModeRouter {
 	 * Validates payment type
 	 * 
 	 * @param paymentType
+	 * 			ONLINE | CASH
 	 * @throws PaymentProcessException
 	 */
-	private void validate(PaymentType paymentType) throws PaymentProcessException{
+	private void validate(final PaymentType paymentType) throws PaymentProcessException{
 		if(paymentType == null){
-			String errMsg = "Could not route the order as payment type is not available";
+			final String errMsg = "Could not route the order as payment type is not available";
 			LOG.error(errMsg);
 			throw new PaymentProcessException(errMsg);
 		}
 		
 		if(!(paymentType == PaymentType.CASH || paymentType == PaymentType.ONLINE)){
-			String errMsg = "Could not route the order as payment type["+paymentType.toString()+"] is invalid";
+			final String errMsg = "Could not route the order as payment type["+paymentType.toString()+"] is invalid";
 			LOG.error(errMsg);
 			throw new PaymentProcessException(errMsg);
 		}

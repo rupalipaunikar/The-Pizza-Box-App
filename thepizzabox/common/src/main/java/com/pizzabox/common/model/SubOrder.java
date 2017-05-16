@@ -16,12 +16,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import com.pizzabox.common.constants.ItemType;
-
 
 /**
  * Represents details of a suborder specific to the item being processed. Each
@@ -57,9 +54,7 @@ public class SubOrder implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "suborders_items", joinColumns = @JoinColumn(name = "suborder_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
-	//uniqueConstraints=@UniqueConstraint(columnNames = { "suborder_id" ,"item_id"}))
 	private List<Item> items = new ArrayList<Item>();
-	
 
 	public SubOrder() {
 		super();
@@ -72,7 +67,7 @@ public class SubOrder implements Serializable {
 		this.quantity = quantity;
 		this.amount = amount;
 	}
-	
+
 	public SubOrder(ItemType subOrderType, Integer quantity, Double amount) {
 		super();
 		this.subOrderType = subOrderType;
@@ -124,12 +119,10 @@ public class SubOrder implements Serializable {
 		this.order = order;
 	}
 
-	// @Override
-	// public String toString() {
-	// return "SubOrder [id=" + id + ", Type=" + subOrderType + ", quantity=" +
-	// quantity + ", amount=" + amount
-	// + ", order=" + order + "]";
-	// }
+	@Override
+	public String toString() {
+		return "SubOrder [id=" + id + ", Type=" + subOrderType + ", quantity=" + quantity + ", amount=" + amount + "]";
+	}
 
 	public ItemType getSubOrderType() {
 		return subOrderType;

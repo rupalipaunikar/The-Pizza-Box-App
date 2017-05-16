@@ -68,7 +68,7 @@ public class TestPaymentServiceImpl {
 		Mockito.doNothing().when(paymentDAO).updateBalance(Mockito.any(CardDetails.class));
 		paymentService.executePayment(paymentDetails);
 		
-		Assert.assertEquals(ErrorCode.INSUFFICIENT_BALANCE, paymentDetails.getPaymentResult().getErrorCode());
+		Assert.assertTrue(ErrorCode.INSUFFICIENT_BALANCE == paymentDetails.getPaymentResult().getErrorCode());
 	}
 	
 	@Test(expected=PaymentServiceException.class)
@@ -78,7 +78,7 @@ public class TestPaymentServiceImpl {
 		Mockito.doThrow(DAOException.class).when(paymentDAO).updateBalance(Mockito.any(CardDetails.class));
 		paymentService.executePayment(paymentDetails);
 		
-		Assert.assertEquals(ErrorCode.BALANCE_UPDATE, paymentDetails.getPaymentResult().getErrorCode());
+		Assert.assertTrue(ErrorCode.BALANCE_UPDATE == paymentDetails.getPaymentResult().getErrorCode());
 	}
 	
 	@Test(expected=PaymentServiceException.class)
@@ -88,7 +88,7 @@ public class TestPaymentServiceImpl {
 		Mockito.doThrow(DAOException.class).when(paymentDAO).getBalanceForCard(Mockito.any(CardDetails.class));
 		paymentService.executePayment(paymentDetails);
 		
-		Assert.assertEquals(ErrorCode.BALANCE_UNAVAILABLE, paymentDetails.getPaymentResult().getErrorCode());
+		Assert.assertTrue(ErrorCode.BALANCE_UNAVAILABLE == paymentDetails.getPaymentResult().getErrorCode());
 	}
 	
 	private PaymentDetails createPaymentDetails(){

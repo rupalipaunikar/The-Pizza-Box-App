@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -25,6 +24,8 @@ import com.pizzabox.common.constants.ItemType;
 @Entity
 @Table(name = "item")
 public class Item implements Serializable{
+
+	private static final long serialVersionUID = -5286591770904183798L;
 
 	@Id
 	@GeneratedValue

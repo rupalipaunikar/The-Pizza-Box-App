@@ -31,9 +31,10 @@ public class PaymentValidator {
 	 * Validates order
 	 * 
 	 * @param order
+	 * 			Order being processed
 	 * @throws PaymentValidationException
 	 */
-	public void validate(Order order) throws PaymentValidationException {
+	public void validate(final Order order) throws PaymentValidationException {
 		LOG.info("Validating order information.");
 		if (order == null || order.getId() == null) {
 			String errMsg = "Either order or its ID is null";
@@ -41,7 +42,7 @@ public class PaymentValidator {
 			throw new PaymentValidationException(errMsg);
 		}
 
-		Double totalAmount = order.getTotalAmount();
+		final Double totalAmount = order.getTotalAmount();
 		if (totalAmount == null || totalAmount == 0.0) {
 			String errMsg = "Order ID[" + order.getId() + "] has invalid amount";
 			LOG.error(errMsg);
@@ -55,9 +56,10 @@ public class PaymentValidator {
 	 * Validates user
 	 * 
 	 * @param user
+	 * 			User for whom order is being processed
 	 * @throws PaymentValidationException
 	 */
-	public void validate(User user) throws PaymentValidationException {
+	public void validate(final User user) throws PaymentValidationException {
 		LOG.info("Validating user information.");
 
 		if (user == null) {
@@ -79,14 +81,17 @@ public class PaymentValidator {
 	 * Validates order and user and CardDetails
 	 * 
 	 * @param order
+	 * 			Order being processed
 	 * @param user
+	 * 			User for whom order is being processed
 	 * @param cardDetails
+	 * 			Card details of the user
 	 * @throws PaymentValidationException
 	 */
-	public String validate(Order order, User user, CardDetails cardDetails) throws PaymentValidationException {
+	public String validate(final Order order, final User user, final CardDetails cardDetails) throws PaymentValidationException {
 		validate(order);
 		validate(user);
-		PaymentType paymentType = order.getPaymentType();
+		final PaymentType paymentType = order.getPaymentType();
 		
 		if(paymentType == null || !(paymentType == PaymentType.CASH || paymentType == PaymentType.ONLINE)){
 			String errMsg = "Payment type has not been selected for order ID[" + order.getId() + "]";
@@ -115,10 +120,12 @@ public class PaymentValidator {
 	 * Validates order and user 
 	 * 
 	 * @param order
+	 * 			Order being processed
 	 * @param user
+	 * 			User for whom order is being processed
 	 * @throws PaymentValidationException
 	 */
-	public void validate(Order order, User user) throws PaymentValidationException {
+	public void validate(final Order order, final User user) throws PaymentValidationException {
 		validate(order);
 		validate(user);
 	}
@@ -127,9 +134,10 @@ public class PaymentValidator {
 	 * Validate payment details
 	 * 
 	 * @param paymentDetails
+	 * 			PaymentDetails containing order, user and card details
 	 * @throws PaymentProcessException
 	 */
-	public void validate(PaymentDetails paymentDetails) throws PaymentProcessException {
+	public void validate(final PaymentDetails paymentDetails) throws PaymentProcessException {
 		if (paymentDetails == null || paymentDetails.getCardDetails() == null 
 				                   || paymentDetails.getOrder() == null
 				                   || paymentDetails.getCardDetails().getUser() == null) {
