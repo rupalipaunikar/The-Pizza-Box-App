@@ -56,9 +56,16 @@ public class OrderGenerator {
 		order.setSubOrders(subOrderList);
 		order.setUpdatedTimestamp(new Timestamp(System.currentTimeMillis()));
 		order.setPaymentType(PaymentType.NOTSELECTED);
-		order.addToSubOrders(subOrderList.get(0));
+		
+		int listSize = subOrderList.size();
+		
+		for(int counter=0;counter<listSize;counter++){
+			order.addToSubOrders(subOrderList.get(counter));
+		} 
+		
+		/*order.addToSubOrders(subOrderList.get(0));
 		order.addToSubOrders(subOrderList.get(1));
-		order.addToSubOrders(subOrderList.get(2));
+		order.addToSubOrders(subOrderList.get(2));*/
 
 
 		LOG.info("Order Created for the user " + user.getUsername());
@@ -119,8 +126,13 @@ public class OrderGenerator {
 			iteratorItemList.next();
 		}
 
-		subOrderList.add(sidesSubOrder);
+		if(sidesSubOrder.getItems()!=null && sidesSubOrder.getQuantity()!=null)
+				subOrderList.add(sidesSubOrder);
+		
+		if(beverageSubOrder.getItems()!=null && beverageSubOrder.getQuantity()!=null)
 		subOrderList.add(beverageSubOrder);
+		
+		if(pizzaSubOrder.getItems()!=null && pizzaSubOrder.getQuantity()!=null)
 		subOrderList.add(pizzaSubOrder);
 
 		LOG.info("Sub-Orders created successfully");
@@ -137,7 +149,7 @@ public class OrderGenerator {
 	public SubOrder generateSuborder(final SubOrder subOrder, final Item item) {
 		subOrder.setAmount(item.getPrice() + (subOrder.getAmount() != null ? subOrder.getAmount() : 0));
 		subOrder.setQuantity(item.getQuantity() + (subOrder.getQuantity() != null ? subOrder.getQuantity() : 0));
-		subOrder.setSubOrderType(ItemType.PIZZA);
+		subOrder.setSubOrderType(item.getType());
 		subOrder.addToItems(item);
 		return subOrder;
 	}

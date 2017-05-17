@@ -70,15 +70,14 @@ public class OrderServiceImpl implements OrderService {
 		final User user = getUserDetails(username);
 		final Order raworder = orderGenerator.generateOrder(finalItemList, user);
 
-		final Order order = orderGenerator.generateOrder(finalItemList, user);
 		try{
-		finalOrder = orderDAO.generateOrder(order);
+		finalOrder = orderDAO.generateOrder(raworder);
 		}catch(DAOException exception){
 			LOG.error("Could not generate order for user ["+user.getUsername()+"].");
 			throw new OrderGenerationException(exception);
 		}
 
-		LOG.info("Order Created for the user " + order.getUser().getUsername());
+		LOG.info("Order Created for the user " + finalOrder.getUser().getUsername());
 		return finalOrder;
 	}
 
