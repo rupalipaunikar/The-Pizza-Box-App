@@ -5,7 +5,8 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml,/WEB-INF/spring-security.xml,
-			/WEB-INF/spring-servlet.xml, /WEB-INF/home-delivery-flow.xml</param-value>
+			/WEB-INF/spring-servlet.xml,/WEB-INF/home-delivery-flow.xml,/WEB-INF/core-flow.xml</param-value>
+
 	</context-param>
 	
 	<context-param>
