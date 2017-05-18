@@ -1,4 +1,6 @@
 package com.pizzaboxcore.dao.impl;
+import java.sql.Timestamp;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -6,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
 import com.pizzaboxcore.constants.Constants;
@@ -25,6 +28,8 @@ public class OrderDAOImpl implements OrderDAO {
 
 	public static final String _GET_USER_DETAIL = "from User user where user.username =:username";
 	public static final String _GET_ORDER = "from Order where id=:id ";
+	private static final String _WHERE_ID_ = " where id=:id";
+	private static final String _UPDATE_ORDER_STATUS_UPDATEDTIMESTAMP = "UPDATE Order SET status =:status, updated_timestamp=:updated_timestamp";
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -70,6 +75,35 @@ public class OrderDAOImpl implements OrderDAO {
 		}
 		
 		return finalOrder;
+	}
+	
+	/**
+	 * This API updates the order status with the given status
+	 * 
+	 * @param orderId
+	 * 			ID of the order being processed
+	 * @param status
+	 * 			Order status to be updated
+	 * @throws DAOException 
+	 */
+	@Override
+	public void updateOrderStatus(final Integer orderId, final Status status) throws DAOException {
+		
+		final Session session = sessionFactory.openSession();
+		final Query query = session.createQuery(_UPDATE_ORDER_STATUS_UPDATEDTIMESTAMP + _WHERE_ID_).setParameter(Constants.STATUS, status)
+				.setParameter(Constants.ID, orderId)
+				.setParameter(Constants.UPDATEDTIMESTAMP, new Timestamp(System.currentTimeMillis()));
+			
+		
+		final Integer result = query.executeUpdate();
+		
+		if(result == null || result != 1){
+			final String errMsg = "Could not update order status for orderID["+orderId+"]";
+			LOG.error(errMsg);
+			throw new DAOException(errMsg);
+		}
+		
+		LOG.info("Successfully updated order status["+status.toString()+"] for orderID["+orderId+"]");
 	}
 }
 

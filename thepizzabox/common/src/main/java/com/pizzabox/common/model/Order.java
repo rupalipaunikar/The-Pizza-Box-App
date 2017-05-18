@@ -68,8 +68,6 @@ public class Order implements Serializable {
 		this.id = id;
 	}
 
-	//@NotBlank(message="Please select ")
-	//@NotNull(message="Please select ")
 	public PaymentType getPaymentType() {
 		return paymentType;
 	}

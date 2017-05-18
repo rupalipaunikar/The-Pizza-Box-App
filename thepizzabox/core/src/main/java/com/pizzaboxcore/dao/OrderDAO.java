@@ -1,5 +1,6 @@
 package com.pizzaboxcore.dao;
 
+import com.pizzabox.common.constants.Status;
 import com.pizzabox.common.model.Order;
 import com.pizzabox.common.model.User;
 import com.pizzaboxcore.custom.exception.DAOException;
@@ -35,4 +36,15 @@ public interface OrderDAO {
 	 * @throws DAOException 
 	 */
 	public Order getGeneratedOrder(Integer orderId) throws DAOException;
+	
+	/**
+	 * This API updates the order status with the given status
+	 * 
+	 * @param orderId
+	 * 			ID of the order being processed
+	 * @param status
+	 * 			Order status to be updated
+	 * @throws DAOException 
+	 */
+	void updateOrderStatus(final Integer orderId, final Status status) throws DAOException;
 }

@@ -23,6 +23,9 @@ public class Constants {
 	public static final String PRINCIPAL_OBJECT_NULL  = "Pricipal Object received from the request is null";
 	public static final String ORDER_OR_ORDERID_NULL = "Either the order or its id is null";
 	public static final String USER_OR_ID_NULL = "Either the user or its id is null";
+	public static final String ID = "id";
+	public static final String UPDATEDTIMESTAMP = "updated_timestamp";
+	public static final String STATUS = "status";
 	
 	
 	

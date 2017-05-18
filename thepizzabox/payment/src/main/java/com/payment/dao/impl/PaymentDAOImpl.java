@@ -1,5 +1,6 @@
 package com.payment.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -34,7 +35,7 @@ public class PaymentDAOImpl implements PaymentDAO {
 	private static final String _WHERE_ID = " where id=:id";
 	private static final String _SELECT_BALANCE = "SELECT balance from CardDetails";
 	private static final String _UPDATE_BALANCE = "UPDATE CardDetails SET balance =:balance";
-	private static final String _UPDATE_ORDER_STATUS = "UPDATE Order SET status =:status";
+	private static final String _UPDATE_ORDER_STATUS_UPDATEDTIMESTAMP = "UPDATE Order SET status =:status, updated_timestamp=:updated_timestamp";
 
 	/**
 	 * SessionFactory to interact with the database
@@ -118,8 +119,9 @@ public class PaymentDAOImpl implements PaymentDAO {
 	public void updateOrderStatus(final Integer orderId, final Status status) throws DAOException {
 		
 		final Session session = sessionFactory.openSession();
-		final Query query = session.createQuery(_UPDATE_ORDER_STATUS + _WHERE_ID).setParameter(Constants.STATUS, status)
-				.setParameter(Constants.ID, orderId);
+		final Query query = session.createQuery(_UPDATE_ORDER_STATUS_UPDATEDTIMESTAMP + _WHERE_ID).setParameter(Constants.STATUS, status)
+				.setParameter(Constants.ID, orderId)
+				.setParameter(Constants.UPDATEDTIMESTAMP, new Timestamp(System.currentTimeMillis()));
 			
 		
 		final Integer result = query.executeUpdate();
